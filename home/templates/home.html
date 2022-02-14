@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+
+{% providers_media_js %}
+
+{% block content %}
+    <h1>Hello world</h1>
+
+    <p>This is a template</p>
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.get_username }}. Thanks for logging in.</p>
+    {% else %}
+        <p>Welcome, new user. Please log in.</p>
+    {% endif %}
+
+    <a href="{% provider_login_url "google" %}">Google Login</a>
+{% endblock %} 
