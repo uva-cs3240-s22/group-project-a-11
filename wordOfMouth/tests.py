@@ -6,4 +6,4 @@ class QuestionModelTests(TestCase):
         """
         test_true() returns True regardless.
         """
-        self.assertIs(True, False)
+        self.assertIs(True, True)
