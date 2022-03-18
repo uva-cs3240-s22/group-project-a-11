@@ -10,6 +10,8 @@ class Recipe(models.Model):
     writer = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
     likes = models.IntegerField(default=0)
+    def __str__(self):
+        return self.recipeTitle
 
 
 class RecipeManager(models.Manager):
