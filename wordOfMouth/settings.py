@@ -33,7 +33,6 @@ ALLOWED_HOSTS = ['127.0.0.1', 'group-project-a-11.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'wordOfMouth',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
