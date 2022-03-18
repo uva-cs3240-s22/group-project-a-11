@@ -12,7 +12,3 @@ class Recipe(models.Model):
     likes = models.IntegerField(default=0)
     def __str__(self):
         return self.recipeTitle
-
-
-class RecipeManager(models.Manager):
-    childReviewQuery = models.ForeignObject(Recipe)
