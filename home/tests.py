@@ -15,19 +15,3 @@ Output: Both the Reuben and Salad can be found by their recipe names,
 Type of Test: Equivalency
 User Story ID: 5
 """
-class TestRecipeModel(TestCase):
-    def setUp(self):
-        Recipe.objects.create(recipeTitle="Reuben",writer="Reiss")
-        Recipe.objects.create(recipeTitle="Salad",writer="McBurney",vegan=1,glutenfree=1,vegiterian=1)
-
-    def test_options_names_correct(self):
-        reuben = Recipe.objects.get(recipeTitle="Reuben")
-        salad = Recipe.objects.get(recipeTitle="Salad")
-        self.assertEqual(reuben.writer, "Reiss")
-        self.assertEqual(salad.writer, "McBurnery")
-        self.assertEqual(reuben.vegan,0)
-        self.assertEqual(reuben.vegitarian,0)
-        self.assertEqual(reuben.glutenfree,0)
-        self.assertEqual(salad.vegan,1)
-        self.assertEqual(salad.vegitarian,1)
-        self.assertEqual(salad.glutenfree,1)
