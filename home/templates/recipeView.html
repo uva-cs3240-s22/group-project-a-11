@@ -1,0 +1,12 @@
+{% extends base.html %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<span class="border border-white">
+        <div class="form-group d-flex justify-content-center text-center">
+         {% bootstrap_label recipe.recipeTitle %}
+        </div>
+        <div class="form-group d-flex justify-content-center text-center">
+            <li>{{ recipe.recipeText}}</li>
+        </div>
+</span>
