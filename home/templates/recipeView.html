@@ -1,0 +1,17 @@
+{% load bootstrap5 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+ <ul>
+    {% for recipe in recipe_list %}
+    <span class="border border-white">
+        <div class="form-group d-flex justify-content-center text-center">
+         {% bootstrap_label recipe.recipeTitle %}
+        </div>
+        <div class="form-group d-flex justify-content-center text-center">
+            <li>{{ recipe.recipeText}}</li>
+        </div>
+    </span>
+    {% endfor %}
+ </ul>

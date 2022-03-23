@@ -16,9 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from home.views import home_view
+from home.views import submit_recipe
+from home.views import RecipeView
 
+app_name = 'home'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),
-    path('', home_view, name='home')
+    path('', home_view, name='home'),
+    path('recipeSubmission', submit_recipe, name='recipeSubmission'),
+    path('recipe/',RecipeView.as_view(),name="recipeView")
 ]
