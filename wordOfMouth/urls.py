@@ -19,10 +19,11 @@ from home.views import home_view
 from home.views import submit_recipe
 from home.views import RecipeView
 
+app_name = 'home'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path('', home_view, name='home'),
     path('recipeSubmission', submit_recipe, name='recipeSubmission'),
-    path('recipe/<int:pk>',RecipeView.as_view(),name="recipeView")
+    path('recipe/',RecipeView.as_view(),name="recipeView")
 ]

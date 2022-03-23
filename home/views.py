@@ -22,17 +22,17 @@ def submit_recipe(request):
         newRecipe.recipeTitle = recipe_title
         newRecipe.recipeText = recipe_text
         newRecipe.save()
-        return HttpResponseRedirect(reverse('home:results'), args =(newRecipe.id,))
+        return HttpResponseRedirect('/recipe/')
     else:
         return render(request, 'recipeSubmission.html')
 
-class RecipeView(generic.DetailView):
+class RecipeView(generic.ListView):
     model = Recipe
     template_name = 'recipeView.html'
     def get_queryset(self):
         """
         Excludes any questions that aren't published yet.
         """
-        return Recipe.objects.filter(recipeTitle ="")
+        return Recipe.objects.all()
 
 

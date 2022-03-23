@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+
 {% load bootstrap5 %}
 
 {# Load CSS and JavaScript #}
@@ -19,5 +19,10 @@
             {% bootstrap_label "Add Your Instructions:" %}
             <input type = 'text' name = 'text'>
         </div>
+        {% buttons %}
+            <button type "submit" class="btn btn-primary justify-content-right">
+                Submit
+            </button>
+        {% endbuttons%}
     </form>
 {% endblock %}
