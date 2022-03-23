@@ -41,6 +41,20 @@ class Recipe(models.Model):
 
     parentRecipe = models.ForeignKey('self', unique=False, related_name="childrenRecipe", on_delete=models.CASCADE, null=True, blank=True)
 
+    BEGINNER = 'BE'
+    INTERMEDIATE = 'IN'
+    ADVANCED = 'AD'
+    DIFFICULTY_CHOICES = [
+        (BEGINNER, 'Beginner'),
+        (INTERMEDIATE, 'Intermediate'),
+        (ADVANCED, 'Advanced'),
+    ]
+    difficulty = models.CharField(
+        max_length=2,
+        choices=DIFFICULTY_CHOICES,
+        default=INTERMEDIATE,
+    )
+
     
     def __str__(self) -> str:
         return self.recipeTitle
