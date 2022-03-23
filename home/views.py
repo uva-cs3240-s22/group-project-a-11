@@ -6,6 +6,7 @@ from django.views import generic
 from django.utils import timezone
 from .models import Recipe
 
+
 # Create your views here.
 def home_view(request):
     """
@@ -36,3 +37,28 @@ class RecipeView(generic.ListView):
         return Recipe.objects.all()
 
 
+def template_testing_view_recipe(request):
+    """
+    A view to allow templates to be created before the backend is ready
+    Should be removed for final release
+    Written by Ben
+    """
+    return render(request, "recipe.html", {})
+
+
+def template_testing_view_feed(request):
+    """
+    A view to allow templates to be created before the backend is ready
+    Should be removed for final release
+    Written by Ben
+    """
+    return render(request, "feed.html", {})
+
+
+def template_testing_view_recipe_add(request):
+    """
+    A view to allow templates to be created before the backend is ready
+    Should be removed for final release
+    Written by Ben
+    """
+    return render(request, "recipe_add.html", {})

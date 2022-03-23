@@ -18,6 +18,8 @@ from django.urls import path, include
 from home.views import home_view
 from home.views import submit_recipe
 from home.views import RecipeView
+from home.views import home_view, template_testing_view_recipe, \
+    template_testing_view_recipe_add, template_testing_view_feed
 
 app_name = 'home'
 urlpatterns = [
@@ -26,4 +28,7 @@ urlpatterns = [
     path('', home_view, name='home'),
     path('recipeSubmission', submit_recipe, name='recipeSubmission'),
     path('recipe/',RecipeView.as_view(),name="recipeView")
+    path('recipe-template-testing/', template_testing_view_recipe, name="recipe_template-testing"),
+    path('recipe-add-template-testing/', template_testing_view_recipe_add, name="recipe_add_template-testing"),
+    path('feed-template-testing/', template_testing_view_feed, name="feed_template-testing"),
 ]
