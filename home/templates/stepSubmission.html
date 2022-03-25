@@ -1,0 +1,24 @@
+
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block title %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group d-flex justify-content-center text-center">
+            {% bootstrap_label "Add an Instructions" recipe.recipeTitle %}
+            <input type = 'text' name = 'text'>
+        </div>
+        {% buttons %}
+            <button type "submit" class="btn btn-primary justify-content-right">
+                Submit
+            </button>
+        {% endbuttons%}
+    </form>
+{% endblock %}
