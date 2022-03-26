@@ -4,9 +4,9 @@ from django.db import models
 class Recipe(models.Model):
     recipeTitle = models.CharField(max_length=200)
     recipeText = models.TextField()
-    writer = models.CharField(max_length=200)
+    writer = models.CharField(max_length=200, related_name='writer')
     # likes = models.IntegerField(default=0)
-    like = models.ManyToManyField(User, default=None, blank=True)
+    like = models.ManyToManyField(User, default=None, blank=True, related_name='like')
     def __str__(self) -> str:
         return self.recipeTitle
 

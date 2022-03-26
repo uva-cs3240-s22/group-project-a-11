@@ -4,3 +4,4 @@ from django.contrib import admin
 from .models import Recipe, Favorited
 
 admin.site.register(Recipe)
+admin.site.register(Favorited)
