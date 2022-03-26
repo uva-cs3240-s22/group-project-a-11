@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-from .models import Recipe
+from .models import Recipe, Favorite
 
 # Create your views here.
 def home_view(request):
@@ -13,6 +13,8 @@ def home_view(request):
     """
     return render(request, "home.html", {})
 
+def favorite_view(request):
+    return redirect("home:recipeView")
 
 def submit_recipe(request):
     if(request.method == "POST"):

@@ -18,6 +18,7 @@ from django.urls import path, include
 from home.views import home_view
 from home.views import submit_recipe
 from home.views import RecipeView
+from home.views import favorite_view
 
 app_name = 'home'
 urlpatterns = [
@@ -25,5 +26,6 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path('', home_view, name='home'),
     path('recipeSubmission', submit_recipe, name='recipeSubmission'),
-    path('recipe/',RecipeView.as_view(),name="recipeView")
+    path('recipe/',RecipeView.as_view(),name="recipeView"),
+    path('like/', favorite_view, name="favorite-view"),
 ]
