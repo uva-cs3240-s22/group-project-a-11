@@ -5,9 +5,15 @@ class Recipe(models.Model):
     recipeTitle = models.CharField(max_length=200)
     recipeText = models.TextField()
     writer = models.CharField(max_length=200)
-    likes = models.IntegerField(default=0)
+    # likes = models.IntegerField(default=0)
+    like = models.ManyToManyField(User, default=None, blank=True)
     def __str__(self) -> str:
         return self.recipeTitle
+
+    @Property
+    def number_of_likes(self):
+        return self.like.all().count()
+
 
 class Ingredients(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
@@ -16,3 +22,11 @@ class Ingredients(models.Model):
     quantity = models.IntegerField()
     def __str__(self):
         return self.name
+
+class Favorited(models.Model):
+    user = models.ForiegnKey(User, on_delete=models.CASCADE)
+    recipe_liked = models.ForiegnKey(Recipe, on_delete=models.CASCADE)
+    like_option = models.Charfield(choices={'like', 'no_like'}, default='Like', max_length=10)
+
+    def __str__(self):
+        return str(self.recipe_liked)
