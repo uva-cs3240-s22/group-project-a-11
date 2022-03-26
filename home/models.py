@@ -11,7 +11,7 @@ class Recipe(models.Model):
     def __str__(self) -> str:
         return self.recipeTitle
 
-    @Property
+    @property
     def number_of_likes(self):
         return self.like.all().count()
 
