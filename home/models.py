@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models,User
 
 # Create your models here.
 class Recipe(models.Model):
