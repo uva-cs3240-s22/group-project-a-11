@@ -24,7 +24,7 @@ class Ingredients(models.Model):
     def __str__(self):
         return self.name
 
-class Favorited(models.Model):
+class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe_liked = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     like_option = models.CharField(default='Like', max_length=10)
