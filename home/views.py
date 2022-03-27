@@ -21,8 +21,10 @@ def add_ingredient(request,recipe_id):
         ingredient_name = request.POST.get('ingredient')
         unit_name = request.POST.get('units')
         ingred = Ingredient.objects.create()
+        unit_amount = request.POST.get('amount')
         ingred.name = ingredient_name
         ingred.units = unit_name
+        ingred.quantity = unit_amount
         ingred.recipe.set(Recipe.objects.filter(id=recipe_id))
         recipe.save()
         ingred.save()
@@ -49,6 +51,7 @@ def submit_recipe(request):
         step_text = request.POST.get('text')
         ingredient_name = request.POST.get('ingredient')
         unit_name = request.POST.get('units')
+        unit_amount = request.POST.get('amount')
         newRecipe = Recipe.objects.create()
         recid = newRecipe.id
         newRecipe.recipeTitle = recipe_title
@@ -57,6 +60,7 @@ def submit_recipe(request):
         step.text = step_text
         ingred.name = ingredient_name
         ingred.units = unit_name
+        ingred.quantity = unit_amount
         step.recipe.set(Recipe.objects.filter(id=recid))
         ingred.recipe.set(Recipe.objects.filter(id=recid))
         newRecipe.save()

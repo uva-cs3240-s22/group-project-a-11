@@ -8,7 +8,7 @@ class Recipe(models.Model):
     recipeText = models.TextField()
     writer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
-    likes = models.IntegerField(default=0)
+    """likes = models.IntegerField(default=0)"""
     time_to_make = models.IntegerField(default=60)
     """steps = models.ManyToManyField(Step)
     ingredients = models.ManyToManyField(Ingredient)
