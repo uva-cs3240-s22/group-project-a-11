@@ -54,7 +54,7 @@
         <div class="row">
             <div class="col"><h4>{{recipe.time_to_make}} min</h4></div>
             <div class="col text-end">
-                <form action="{% url 'wordOfMouth:favorite-view' %}" method='POST'>
+                <form action="{% url 'favorite-view' %}" method='POST'>
                 {% csrf_token %}
 
                 {% if True %}
