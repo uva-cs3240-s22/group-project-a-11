@@ -16,4 +16,9 @@ class Migration(migrations.Migration):
             old_name='Favorited',
             new_name='Favorite',
         ),
+        migrations.RenameModel(
+            old_name='Steps',
+            new_name='Step',
+        ),
+
     ]

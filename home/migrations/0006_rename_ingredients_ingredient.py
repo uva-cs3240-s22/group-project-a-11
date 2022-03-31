@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0005_rename_steps_step'),
+        ('home', '0005_rename_favorited_favorite.py'),
     ]
 
     operations = [
