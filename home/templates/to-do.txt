@@ -1,0 +1,30 @@
+Template To-Do List
+
+***Base/Overall***
+- !important! standardize container width/figure out breakpoints + max-width
+- reduce code redundancy
+- split templates into components if it would improve readability
+
+***Header***
+- get working on mobile
+- integrate search
+- intergrate login
+- update buttons as appropriate
+
+***Footer***
+- update links as appropriate
+- reduce height on mobile?
+
+***Feed***
+- integrate everything
+- paginate feed
+- add tag overlay
+- Does filtering go here? Versus a search view?
+
+***Recipe***
+- integrate everything
+- fix max-width especially for the carousel
+- restrict caption length
+- paginate comments
+
+***Add Recipe***

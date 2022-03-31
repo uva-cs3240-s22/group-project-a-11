@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block title %}
+    Edit Ingredients - Word of Mouth
+{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group d-flex justify-content-center text-center">
+            {% bootstrap_label "Add an Ingredient" recipe.recipeTitle %}
+            <input type = 'text' name = 'ingredient'>
+        </div>
+        <div class="form-group d-flex justify-content-center text-center">
+            {% bootstrap_label "Add your Ingredient's Units:" %}
+            <input type = 'text' name = 'units'>
+        </div>
+        <div class="form-group d-flex justify-content-center text-center">
+            {% bootstrap_label "Add your Ingredient's Amount:" %}
+            <input type="number" name='amount'/>
+        </div>
+        {% buttons %}
+            <button type "submit" class="btn btn-primary justify-content-right">
+                Submit
+            </button>
+        {% endbuttons%}
+    </form>
+{% endblock %}
