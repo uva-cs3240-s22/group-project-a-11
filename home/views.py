@@ -14,6 +14,7 @@ def home_view(request):
     """
     return render(request, "home.html", {})
 
+
 def favorite_view(request):
     user = request.user
     if request.method == 'POST':
@@ -30,7 +31,6 @@ def favorite_view(request):
         if not create:
             if like_it.value == "Like":
                 like_it.value == "Unlike"
-
             else:
                 like_it.value == "Like"
 
