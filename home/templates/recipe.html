@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+{{recipe.recipeTitle}} - Word of Mouth
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'home/styles/recipe_styles.css' %}">
+{% endblock %}
+
 {% block content %}
     <!-- title -->
 
@@ -10,7 +18,7 @@
     <!-- image carousel -->
     <!-- TODO: fix the max-width of the carousel-->
     <!-- TODO: restrict length of captions because they're going to cover the photo-->
-    <div id="recipeImages" class="carousel slide w-50 container" data-bs-ride="carousel">
+    <div id="recipeImages" class="carousel slide container" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#recipeImages" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#recipeImages" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -42,7 +50,7 @@
     <!-- caption -->
     <!-- time | rating -->
     <!-- author | fork -->
-    <div class="w-50 container mt-3">
+    <div class="recipe-metadata container mt-3">
         <div class="row">
             <div class="col"><h4>{{recipe.time_to_make}} min</h4></div>
             <div class="col text-end"><h4>
@@ -61,7 +69,7 @@
 
     <!-- ingredients -->
     <h4>Ingredients</h4>
-    <p>Makes <input style="width: 5em" type="number" value="1"/> servings</p>
+    <p>Makes <input type="number" value="1"/> servings</p>
     <ul>
         {% for ingredient in recipe.ingredient_set.all %}
             <li>{{ingredient.quantity}} {{ingredient.units}} {{ingredient.name}}</li>
