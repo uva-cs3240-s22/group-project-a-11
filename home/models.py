@@ -13,7 +13,6 @@ class Recipe(models.Model):
     """likes = models.IntegerField(default=0)"""
     time_to_make = models.IntegerField(default=60)
     """steps = models.ManyToManyField(Step)
-    ingredients = models.ManyToManyField(Ingredient)
 
     meal_type = models.ManyToManyField(Meal_Type)
     cuisine_type = models.ManyToManyField(Cuisine_Type)"""
@@ -89,3 +88,7 @@ class Step(models.Model):
     recipe = models.ManyToManyField(Recipe)
     def __str__(self):
         return str(self.text)
+
+class Comment(models.Model):
+    text = models.CharField(max_length=500, default="")
+    recipe_posted_on = models.ForeignKey(Recipe, unique=False, on_delete=models.CASCADE)

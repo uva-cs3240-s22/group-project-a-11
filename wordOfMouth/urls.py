@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from home.views import home_view
+from home.views import add_comment, home_view
 from home.views import submit_recipe
 from home.views import home_view, template_testing_view_recipe, recipeView, template_testing_view_feed, add_step, add_ingredient, favorite_view
 
@@ -31,4 +31,6 @@ urlpatterns = [
     path('feed-template-testing/', template_testing_view_feed, name="feed_template-testing"),
     path('ingredAdd/<int:recipe_id>', add_ingredient, name="ingredient-adding"),
     path('stepAdd/<int:recipe_id>', add_step, name="step-adding"),
+    path('commentAdd/<int:recipe_id>', add_comment, name="comment-adding"),
+
 ]

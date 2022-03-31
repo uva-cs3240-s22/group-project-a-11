@@ -1,3 +1,4 @@
+from xml.etree.ElementTree import Comment
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -67,6 +68,20 @@ def add_step(request,recipe_id):
         return render(request, "recipe.html", context={"recipe":recipe,})
     else:
         return render(request, "stepSubmission.html", {})
+
+def add_comment(request,recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    if(request.method == "POST"):
+        comment_text = request.POST.get('text')
+        comment = Comment.objects.create()
+        comment.text = comment_text
+        comment.recipe.set(Recipe.objects.filter(id=recipe_id))
+        recipe.save()
+        comment.save()
+        return render(request, "recipe.html", context={"recipe":recipe,})
+    else:
+        return render(request, "commentSubmission.html", {})
 
 def submit_recipe(request):
     if (request.method == "POST"):
