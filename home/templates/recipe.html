@@ -50,7 +50,7 @@
     <!-- caption -->
     <!-- time | rating -->
     <!-- author | fork -->
-    <div class="recipe-metadata container mt-3">
+    <div class="recipe-metadata container mt-3 mb-3">
         <div class="row">
             <div class="col"><h4>{{recipe.time_to_make}} min</h4></div>
             <div class="col text-end"><h4>
@@ -68,21 +68,26 @@
     </div>
 
     <!-- ingredients -->
-    <h4>Ingredients</h4>
-    <p>Makes <input type="number" value="1"/> servings</p>
+    <div class="ingredients-directions-header">
+        <h4>Ingredients</h4>
+        <a href="{% url 'ingredient-adding' recipe.id %}" class="btn btn-primary" role="button">Edit Ingredients</a>
+    </div>
+    <p>Makes <input type="number" label="servings" value="1"/> servings</p>
     <ul>
         {% for ingredient in recipe.ingredient_set.all %}
             <li>{{ingredient.quantity}} {{ingredient.units}} {{ingredient.name}}</li>
         {% endfor %}
-        <a href="{% url 'ingredient-adding' recipe.id %}" class="btn btn-info" role="button">Add an Ingredient</a>
     </ul>
     <!-- directions -->
-    <h4>Directions</h4>
+    <div class="ingredients-directions-header">
+        <h4>Directions</h4>
+        <a href="{% url 'step-adding' recipe.id %}" class="btn btn-primary" role="button">Edit Directions</a>
+    </div>
     <ol>
         {% for step in recipe.step_set.all %}
         <li>{{step.text}}</li>
         {% endfor %}
-        <a href="{% url 'step-adding' recipe.id %}" class="btn btn-info" role="button">Add a Step</a>
+
     </ol>
     <!-- comments -->
     <!-- TODO: Do we need to paginate comments (bc they could make the page really long -->

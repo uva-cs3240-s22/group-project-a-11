@@ -10,3 +10,14 @@
 input {
     width: 5em;
 }
+
+.ingredients-directions-header {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    margin-bottom: 0.5em
+}
+
+.ingredients-directions-header > h4 {
+    margin-bottom: 0;
+}
