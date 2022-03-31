@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-from .models import Recipe, Step, Ingredient
+from .models import Recipe, Step, Ingredient, Favorite
 
 
 # Create your views here.
@@ -14,6 +14,29 @@ def home_view(request):
     """
     return render(request, "home.html", {})
 
+
+def favorite_view(request):
+    user = request.user
+    if request.method == 'POST':
+        recipe_id = request.POST.get(
+            'post_id')  # needs to be implemented in the main html (post_id needs to be defined)
+        recipe_object = Recipe.objects.get(id=recipe_id)
+        if user in recipe_object.like.all():
+            recipe_object.like.remove(user)
+
+        else:
+            recipe_object.like.add(user)
+
+        like_it, create = Favorite.objects.get_or_create(user=user, post_id=recipe_id)
+        if not create:
+            if like_it.value == "Like":
+                like_it.value == "Unlike"
+            else:
+                like_it.value == "Like"
+
+        like_it.save()
+
+    return redirect("home:recipeView")
 
 def add_ingredient(request,recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
@@ -54,6 +77,7 @@ def submit_recipe(request):
         unit_amount = request.POST.get('amount')
         newRecipe = Recipe.objects.create()
         recid = newRecipe.id
+
         newRecipe.recipeTitle = recipe_title
         step = Step.objects.create()
         ingred = Ingredient.objects.create()
@@ -78,7 +102,6 @@ def template_testing_view_recipe(request):
     Written by Ben
     """
     return render(request, "add_recipe.html", {})
-
 
 def template_testing_view_feed(request):
     """
