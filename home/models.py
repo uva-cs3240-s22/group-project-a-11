@@ -78,7 +78,7 @@ class Ingredient(models.Model):
 
 class Step(models.Model):
     text = models.CharField(max_length=500, default="")
-    asset_url = models.FileField(upload_to='stepImages')
+    # asset_url = models.FileField(upload_to='stepImages')  TODO: KL
     recipe = models.ManyToManyField(Recipe)
     def __str__(self):
         return str(self.text)
