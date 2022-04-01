@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'home',
     'bootstrap5',
-    'gdstorage'
 ]
 
 GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = 'word-of-mouth-cs3240-ae6b0bcc4a79.json'
