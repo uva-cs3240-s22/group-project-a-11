@@ -1,20 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-# Create your models here.
+from gdstorage.storage import GoogleDriveStorage
+gd_storage = GoogleDriveStorage()
 
 class Recipe(models.Model):
+    published = models.BooleanField(default=False)
     recipeTitle = models.CharField(max_length=200)
     recipeText = models.TextField()
     writer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    image = models.FileField(upload_to='recipeImages', storage=gd_storage, null=True)
 
-    """likes = models.IntegerField(default=0)"""
     time_to_make = models.IntegerField(default=60)
-    """steps = models.ManyToManyField(Step)
-    ingredients = models.ManyToManyField(Ingredient)
-
-    meal_type = models.ManyToManyField(Meal_Type)
-    cuisine_type = models.ManyToManyField(Cuisine_Type)"""
 
     parentRecipe = models.ForeignKey('self', unique=False, related_name="childrenRecipe", on_delete=models.CASCADE,
                                      null=True, blank=True)
@@ -58,7 +54,7 @@ class Ingredient(models.Model):
 
 class Step(models.Model):
     text = models.CharField(max_length=500, default="")
-    asset_url = models.CharField(max_length=200, blank=True) # Will change when we figure out images
+    asset_url = models.FileField(upload_to='stepImages', storage=gd_storage)
     recipe = models.ManyToManyField(Recipe)
     def __str__(self):
         return str(self.text)
