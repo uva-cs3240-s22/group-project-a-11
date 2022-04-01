@@ -1,13 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
-from gdstorage.storage import GoogleDriveStorage
-gd_storage = GoogleDriveStorage()
 
 class Recipe(models.Model):
     published = models.BooleanField(default=False)
     recipeTitle = models.CharField(max_length=200)
     recipeText = models.TextField()
-    image = models.FileField(upload_to='recipeImages', storage=gd_storage, null=True)
+    # image = models.FileField(upload_to='recipeImages', null=True) TODO: KL
     like = models.ManyToManyField(User, default=None, blank=True, related_name="like")
     writer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="writer")
 
@@ -80,7 +78,7 @@ class Ingredient(models.Model):
 
 class Step(models.Model):
     text = models.CharField(max_length=500, default="")
-    asset_url = models.FileField(upload_to='stepImages', storage=gd_storage)
+    asset_url = models.FileField(upload_to='stepImages')
     recipe = models.ManyToManyField(Recipe)
     def __str__(self):
         return str(self.text)
