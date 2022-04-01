@@ -70,6 +70,11 @@ def submit_recipe(request):
     else:
         return render(request, "recipeSubmission.html", {})
 
+def delete_ingredient(request,ingredient_id,recipe_id):
+    ingredient = get_object_or_404(Ingredient, ingredient_id)
+    ingredient.delete()
+    return HttpResponseRedirect(reverse('wordOfMouth:recipe', args = (recipe_id,)))
+
 
 def template_testing_view_recipe(request):
     """

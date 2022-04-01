@@ -67,6 +67,7 @@
             <li>{{ingredient.quantity}} {{ingredient.units}} {{ingredient.name}}</li>
         {% endfor %}
         <a href="{% url 'ingredient-adding' recipe.id %}" class="btn btn-info" role="button">Add an Ingredient</a>
+        <a href="{% url 'delete-ingredient' recipe.id ingredient.id %}" class="btn btn-info" role="button">Delete an Ingredient</a>
     </ul>
     <!-- directions -->
     <h4>Directions</h4>
