@@ -48,9 +48,11 @@ INSTALLED_APPS = [
     'bootstrap5',
 ]
 
-GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = 'word-of-mouth-cs3240-ae6b0bcc4a79.json'
-GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = 'wordOfMouthMedia'
-
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_ACCESS_KEY_ID = 'AKIAW3QOXWVLFIEJKSPF'
+AWS_S3_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'word-of-mouth'
+AWS_QUERYSTRING_AUTH = False
 
 SOCIALACCOUNT_PROVIDERS = {
    'google': {
@@ -104,6 +106,7 @@ WSGI_APPLICATION = 'wordOfMouth.wsgi.application'
 #             'NAME': 'mydatabase'
 #         }
 #     }
+
 DATABASES = {}
 
 if 'test' in sys.argv:
