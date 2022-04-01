@@ -1,22 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-
 class Recipe(models.Model):
+    published = models.BooleanField(default=False)
     recipeTitle = models.CharField(max_length=200)
     recipeText = models.TextField()
-    # likes = models.IntegerField(default=0)
+    # image = models.FileField(upload_to='recipeImages', null=True) TODO: KL
     like = models.ManyToManyField(User, default=None, blank=True, related_name="like")
     writer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="writer")
 
-    """likes = models.IntegerField(default=0)"""
     time_to_make = models.IntegerField(default=60)
-    """steps = models.ManyToManyField(Step)
-    ingredients = models.ManyToManyField(Ingredient)
-
-    meal_type = models.ManyToManyField(Meal_Type)
-    cuisine_type = models.ManyToManyField(Cuisine_Type)"""
 
     parentRecipe = models.ForeignKey('self', unique=False, related_name="childrenRecipe", on_delete=models.CASCADE,
                                      null=True, blank=True)
@@ -85,7 +78,7 @@ class Ingredient(models.Model):
 
 class Step(models.Model):
     text = models.CharField(max_length=500, default="")
-    asset_url = models.CharField(max_length=200, blank=True) # Will change when we figure out images
+    # asset_url = models.FileField(upload_to='stepImages')  TODO: KL
     recipe = models.ManyToManyField(Recipe)
     def __str__(self):
         return str(self.text)

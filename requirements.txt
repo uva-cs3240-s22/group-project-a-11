@@ -3,3 +3,4 @@ django_on_heroku==1.1.2
 django-bootstrap-v5==1.0.8
 gunicorn==20.1.0
 django-allauth
+django-googledrive-storage

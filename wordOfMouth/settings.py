@@ -46,7 +46,12 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'home',
     'bootstrap5',
+    'gdstorage'
 ]
+
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = 'word-of-mouth-cs3240-ae6b0bcc4a79.json'
+GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = 'wordOfMouthMedia'
+
 
 SOCIALACCOUNT_PROVIDERS = {
    'google': {
@@ -94,6 +99,12 @@ WSGI_APPLICATION = 'wordOfMouth.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#         'default':{
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': 'mydatabase'
+#         }
+#     }
 DATABASES = {}
 
 if 'test' in sys.argv:
