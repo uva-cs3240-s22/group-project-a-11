@@ -80,6 +80,7 @@
     <ul>
         {% for ingredient in recipe.ingredient_set.all %}
             <li>{{ingredient.quantity}} {{ingredient.units}} {{ingredient.name}}</li>
+            <a href="{% url 'delete-ingredient' recipe.id ingredient.id %}" class="btn btn-info" role="button">Delete an Ingredient</a>
         {% endfor %}
     </ul>
     <!-- directions -->
