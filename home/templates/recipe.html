@@ -80,7 +80,7 @@
     <ul>
         {% for ingredient in recipe.ingredient_set.all %}
             <li>{{ingredient.quantity}} {{ingredient.units}} {{ingredient.name}}</li>
-            <a href="{% url 'delete-ingredient' recipe.id ingredient.id %}" class="btn btn-info" role="button">Delete an Ingredient</a>
+            <a href="{% url 'delete-ingredient' recipe.id ingredient.id %}" class="btn btn-info" role="button">Delete this Ingredient</a>
         {% endfor %}
     </ul>
     <!-- directions -->
@@ -90,7 +90,8 @@
     </div>
     <ol>
         {% for step in recipe.step_set.all %}
-        <li>{{step.text}}</li>
+            <li>{{step.text}}</li>
+            <a href="{% url 'delete-step' recipe.id step.id %}" class="btn btn-info" role="button">Delete this Step</a>
         {% endfor %}
 
     </ol>

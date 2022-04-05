@@ -95,9 +95,14 @@ def submit_recipe(request):
         return render(request, "recipeSubmission.html", {})
 
 def delete_ingredient(request,ingredient_id,recipe_id):
-    ingredient = get_object_or_404(Ingredient, ingredient_id)
+    ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
     ingredient.delete()
-    return HttpResponseRedirect(reverse('wordOfMouth:recipe', args = (recipe_id,)))
+    return HttpResponseRedirect(reverse('recipe', args = (recipe_id,)))
+
+def delete_step(request,step_id,recipe_id):
+    step = get_object_or_404(Step, pk=step_id)
+    step.delete()
+    return HttpResponseRedirect(reverse('recipe', args = (recipe_id,)))
 
 
 def template_testing_view_recipe(request):
