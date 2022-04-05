@@ -1,6 +1,6 @@
+from xml.etree.ElementTree import Comment
 from django.db import models
 from django.contrib.auth.models import User
-
 # Create your models here.
 
 class Recipe(models.Model):
@@ -9,6 +9,8 @@ class Recipe(models.Model):
     # likes = models.IntegerField(default=0)
     like = models.ManyToManyField(User, default=None, blank=True, related_name="like")
     writer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="writer")
+
+    # comments = models.ManyToManyField('RecipeComment', default=None, blank=True, related_name="RecipeComment")
 
     """likes = models.IntegerField(default=0)"""
     time_to_make = models.IntegerField(default=60)
@@ -89,6 +91,8 @@ class Step(models.Model):
     def __str__(self):
         return str(self.text)
 
-class Comment(models.Model):
+class RecipeComment(models.Model):
     text = models.CharField(max_length=500, default="")
-    recipe_posted_on = models.ForeignKey(Recipe, unique=False, on_delete=models.CASCADE)
+    recipe = models.ManyToManyField(Recipe)
+    def __str__(self):
+        return str(self.text)

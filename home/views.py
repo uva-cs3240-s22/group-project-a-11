@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-from .models import Recipe, Step, Ingredient, Favorite
+from .models import Recipe, Step, Ingredient, Favorite, RecipeComment
 
 
 # Create your views here.
@@ -71,10 +71,11 @@ def add_step(request,recipe_id):
 
 def add_comment(request,recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    recipe = get_object_or_404(Recipe, pk=recipe_id)
     if(request.method == "POST"):
         comment_text = request.POST.get('text')
-        comment = Comment.objects.create()
+        comment = RecipeComment.objects.create()
+        # print("Comment text: ")
+        # print(comment_text)
         comment.text = comment_text
         comment.recipe.set(Recipe.objects.filter(id=recipe_id))
         recipe.save()
@@ -130,8 +131,9 @@ def template_testing_view_feed(request):
 def recipeView(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     try:
-        steps_select = recipe.step_set.all()
+        # //steps_select = recipe.step_set.all()
         ingredient_select = recipe.step_set.all()
+        # comment_select = recipe.comment_set.all()
         meal_type_select = recipe.meal_type_set.all()
         cuisine_type_select = recipe.cuisine_type_set.all()
     except(KeyError, recipe.DoesNotExist):

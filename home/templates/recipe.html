@@ -91,7 +91,6 @@
         {% for step in recipe.step_set.all %}
         <li>{{step.text}}</li>
         {% endfor %}
-
     </ol>
     <!-- comments -->
     <!-- TODO: Do we need to paginate comments (bc they could make the page really long -->
@@ -100,9 +99,7 @@
         <a href="{% url 'comment-adding' recipe.id %}" class="btn btn-primary" role="button">Add Comment</a>
     </div>
     <div class="container">
-        
-        {% for comment in recipe.comment_set.all %}
-        
+        {% for comment in recipe.recipecomment_set.all %}
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row justify-content-between">
@@ -113,7 +110,5 @@
                 </div>
             </div>
         {% endfor %}
-
     </div>
-
 {% endblock %}
