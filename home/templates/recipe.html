@@ -71,7 +71,7 @@
             </div>
         </div>
         <div class="row mt-1">
-            <div class="col"><a href="#"><h4>Author</h4></a></div>
+            <div class="col"><h4>Posted by {{ recipe.writer.username }}</h4></div>
             <div class="col text-end">
                 <button type="button" class="btn btn-primary" {% if not user.is_authenticated %}disabled{% endif %}>
                     Fork
