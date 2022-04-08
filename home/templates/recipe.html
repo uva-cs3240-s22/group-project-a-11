@@ -83,24 +83,40 @@
     <!-- ingredients -->
     <div class="ingredients-directions-header">
         <h4>Ingredients</h4>
-        <a href="{% url 'ingredient-adding' recipe.id %}" class="btn btn-primary" role="button">Edit Ingredients</a>
+        {% if user.username == recipe.writer.username %}
+            <a href="{% url 'ingredient-adding' recipe.id %}" class="btn btn-primary" role="button">
+                Add an Ingredient
+            </a>
+        {% endif %}
     </div>
-    <p>Makes <input type="number" label="servings" value="1"/> servings</p>
+    <p>Makes <input type="number" value="1" id="servings"/> <label for="servings">servings</label></p>
     <ul>
         {% for ingredient in recipe.ingredient_set.all %}
             <li>{{ingredient.quantity}} {{ingredient.units}} {{ingredient.name}}</li>
-            <a href="{% url 'delete-ingredient' recipe.id ingredient.id %}" class="btn btn-info" role="button">Delete this Ingredient</a>
+            {% if user.username == recipe.writer.username %}
+                <a href="{% url 'delete-ingredient' recipe.id ingredient.id %}" class="btn btn-info" role="button">
+                    Delete this Ingredient
+                </a>
+            {% endif %}
         {% endfor %}
     </ul>
     <!-- directions -->
     <div class="ingredients-directions-header">
         <h4>Directions</h4>
-        <a href="{% url 'step-adding' recipe.id %}" class="btn btn-primary" role="button">Edit Directions</a>
+        {% if user.username == recipe.writer.username %}
+            <a href="{% url 'step-adding' recipe.id %}" class="btn btn-primary" role="button">
+                Add a Direction
+            </a>
+        {% endif %}
     </div>
     <ol>
         {% for step in recipe.step_set.all %}
             <li>{{step.text}}</li>
-            <a href="{% url 'delete-step' recipe.id step.id %}" class="btn btn-info" role="button">Delete this Step</a>
+            {% if user.username == recipe.writer.username %}
+                <a href="{% url 'delete-step' recipe.id step.id %}" class="btn btn-info" role="button">
+                    Delete this Step
+                </a>
+            {% endif %}
         {% endfor %}
 
     </ol>
