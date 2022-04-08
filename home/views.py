@@ -134,4 +134,4 @@ def recipeView(request, recipe_id):
     except(KeyError, recipe.DoesNotExist):
         return render(request, "home.html", {})
     else:
-        return render(request, "recipe.html", context={"recipe": recipe})
+        return render(request, "recipe.html", context={"recipe": recipe, "likes": list(recipe.like.all())})
