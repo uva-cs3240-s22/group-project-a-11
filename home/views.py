@@ -12,12 +12,10 @@ def home_view(request):
     return render(request, "home.html", {})
 
 
-def favorite_view(request):
+def favorite_view(request, recipe_id):
     user = request.user
     if request.method == 'POST':
-        recipe_id = request.POST.get(
-            'post_id')  # needs to be implemented in the main html (post_id needs to be defined)
-        recipe_object = Recipe.objects.get(id=recipe_id)
+        recipe_object = get_object_or_404(Recipe, pk=recipe_id)
         if user in recipe_object.like.all():
             recipe_object.like.remove(user)
 

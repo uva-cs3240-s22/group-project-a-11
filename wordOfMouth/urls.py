@@ -25,7 +25,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path('', home_view, name='home'),
     path('recipeSubmission', submit_recipe, name='recipeSubmission'),
-    path('like/', favorite_view, name="favorite-view"),
+    path('like/<int:recipe_id>', favorite_view, name="favorite-view"),
     path('recipe-template-testing/', template_testing_view_recipe, name="recipe_template-testing"),
     path('recipe/<int:recipe_id>', recipeView, name="recipe"),
     path('feed-template-testing/', template_testing_view_feed, name="feed_template-testing"),
