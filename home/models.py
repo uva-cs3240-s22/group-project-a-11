@@ -10,6 +10,9 @@ class Recipe(models.Model):
     likes = models.ManyToManyField(User, related_name="likes")
     writer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="writer")
 
+    def total_likes(self):
+        return self.likes.count()
+
     time_to_make = models.IntegerField(default=60)
 
     parentRecipe = models.ForeignKey('self', unique=False, related_name="childrenRecipe", on_delete=models.CASCADE,

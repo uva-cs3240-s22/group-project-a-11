@@ -14,6 +14,20 @@ def home_view(request):
     return render(request, "home.html", {})
 
 
+def likeView(request, pk):
+    recipe = get_object_or_404(Recipe, id=request.POST.get('button_id'))
+
+    liked = False
+    if recipe.likes.filter(id=request.user.id).exists():
+        recipe.likes.remove(request.user)
+        liked = False
+    else:
+        recipe.likes.add(request.user)
+        liked = True
+
+    return HttpResponseRedirect(reverse('recipe', args=[str(pk)]))
+
+
 def add_ingredient(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.method == "POST":

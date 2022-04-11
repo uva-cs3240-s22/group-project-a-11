@@ -54,14 +54,17 @@
         <div class="row">
             <div class="col"><h4>{{recipe.time_to_make}} min</h4></div>
             <div class="col text-end">
-                <form action="{% url 'favorite-view' %}" method='POST'>
+                <form action="{% url 'like' recipe.pk %}" method='POST'>
                 {% csrf_token %}
 
-                {% if True %}
-                    <button class="btn btn-primary" type="submit">Like</button>
-                {% else %}
-                    <button class="btn btn-primary" type="submit" >Unlike</button>
-                {% endif %}
+                    {% if liked %}
+                    <button class="btn btn-danger", type="submit", name="button_id",
+                    value="{{recipe.pk}}">Unlike</button>
+                    {% else %}
+                    <button class="btn btn-primary", type="submit", name="button_id",
+                    value="{{recipe.pk}}">Like</button>
+                    {% endif %}
+
                 </form>
             </div>
             <form method="POST">

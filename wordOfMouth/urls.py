@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from home.views import submit_recipe
 from home.views import home_view, template_testing_view_recipe, recipeView, template_testing_view_feed, add_step, \
-    add_ingredient, likeView, delete_ingredient, delete_step
+    add_ingredient, delete_ingredient, likeView, delete_step
 
 app_name = 'wordOfMouth'
 urlpatterns = [
@@ -32,4 +32,5 @@ urlpatterns = [
     path('stepAdd/<int:recipe_id>', add_step, name="step-adding"),
     path('deleteI/<int:recipe_id>/<int:ingredient_id>', delete_ingredient, name="delete-ingredient"),
     path('deleteS/<int:recipe_id>/<int:step_id>', delete_step, name="delete-step"),
+    path('like/<int:pk>', likeView, name='like'),
 ]
