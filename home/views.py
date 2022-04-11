@@ -14,8 +14,6 @@ def home_view(request):
     return render(request, "home.html", {})
 
 
-
-
 def add_ingredient(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.method == "POST":
