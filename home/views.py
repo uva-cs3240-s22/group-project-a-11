@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -30,17 +29,17 @@ def favorite_view(request):
         like_it, create = Favorite.objects.get_or_create(user=user, post_id=recipe_id)
         if not create:
             if like_it.value == "Like":
-                like_it.value == "Unlike"
+                like_it.value = "Unlike"
             else:
-                like_it.value == "Like"
+                like_it.value = "Like"
 
         like_it.save()
+        return HttpResponseRedirect(reverse('recipe', args=recipe_id))
 
-    return redirect("home:recipeView")
 
-def add_ingredient(request,recipe_id):
+def add_ingredient(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    if(request.method == "POST"):
+    if request.method == "POST":
         ingredient_name = request.POST.get('ingredient')
         unit_name = request.POST.get('units')
         ingred = Ingredient.objects.create()
@@ -51,25 +50,27 @@ def add_ingredient(request,recipe_id):
         ingred.recipe.set(Recipe.objects.filter(id=recipe_id))
         recipe.save()
         ingred.save()
-        return render(request, "recipe.html", context={"recipe":recipe,})
+        return render(request, "recipe.html", context={"recipe": recipe})
     else:
         return render(request, "ingredientSubmission.html", {})
 
-def add_step(request,recipe_id):
+
+def add_step(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    if(request.method == "POST"):
+    if request.method == "POST":
         step_text = request.POST.get('text')
         step = Step.objects.create(text=step_text)
         step.text = step_text
         step.recipe.set(Recipe.objects.filter(id=recipe_id))
         recipe.save()
         step.save()
-        return render(request, "recipe.html", context={"recipe":recipe,})
+        return render(request, "recipe.html", context={"recipe": recipe})
     else:
         return render(request, "stepSubmission.html", {})
 
+
 def submit_recipe(request):
-    if (request.method == "POST"):
+    if request.method == "POST":
         recipe_title = request.POST.get('title')
         step_text = request.POST.get('text')
         ingredient_name = request.POST.get('ingredient')
@@ -90,19 +91,21 @@ def submit_recipe(request):
         newRecipe.save()
         ingred.save()
         step.save()
-        return render(request, "recipe.html", context={"recipe":newRecipe,})
+        return render(request, "recipe.html", context={"recipe": newRecipe})
     else:
         return render(request, "recipeSubmission.html", {})
 
-def delete_ingredient(request,ingredient_id,recipe_id):
+
+def delete_ingredient(request, ingredient_id, recipe_id):
     ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
     ingredient.delete()
-    return HttpResponseRedirect(reverse('recipe', args = (recipe_id,)))
+    return HttpResponseRedirect(reverse('recipe', args=recipe_id))
 
-def delete_step(request,step_id,recipe_id):
+
+def delete_step(request, step_id, recipe_id):
     step = get_object_or_404(Step, pk=step_id)
     step.delete()
-    return HttpResponseRedirect(reverse('recipe', args = (recipe_id,)))
+    return HttpResponseRedirect(reverse('recipe', args=(recipe_id,)))
 
 
 def template_testing_view_recipe(request):
@@ -112,6 +115,7 @@ def template_testing_view_recipe(request):
     Written by Ben
     """
     return render(request, "add_recipe.html", {})
+
 
 def template_testing_view_feed(request):
     """
@@ -140,9 +144,3 @@ def recipeView(request, recipe_id):
         return render(request, "home.html", {})
     else:
         return render(request, "recipe.html", context={"recipe":recipe,})
-    """
-    A view to allow templates to be created before the backend is ready
-    Should be removed for final release
-    Written by Ben
-    """
-
