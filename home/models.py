@@ -78,7 +78,14 @@ class Ingredient(models.Model):
 
 class Step(models.Model):
     text = models.CharField(max_length=500, default="")
-    image = models.FileField(upload_to='stepImages', null=True)
+    image = models.FileField(upload_to='stepImages')
+    # ^^ currently breaks addStep, will fix soon
     recipe = models.ManyToManyField(Recipe)
     def __str__(self):
         return str(self.text)
+
+class Tag(models.Model):
+    tag = models.CharField(max_length=500, default="")
+    recipe = models.ManyToManyField(Recipe)
+    def __str__(self):
+        return str(self.tag)
