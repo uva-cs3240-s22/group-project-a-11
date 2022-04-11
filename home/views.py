@@ -1,7 +1,9 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from .models import Recipe, Step, Ingredient, Favorite
+from django.views import generic
+from django.utils import timezone
+from .models import Recipe, Step, Ingredient, Favorite, Tag
 
 
 # Create your views here.
@@ -57,7 +59,7 @@ def add_step(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if request.method == "POST":
         step_text = request.POST.get('text')
-        step = Step.objects.create()
+        step = Step.objects.create(text=step_text)
         step.text = step_text
         step.recipe.set(Recipe.objects.filter(id=recipe_id))
         recipe.save()
@@ -126,6 +128,13 @@ def template_testing_view_feed(request):
 
 def recipeView(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
+    if 'tag_add' in request.POST:
+        tag = Tag.objects.create()
+        tag.tag = request.POST.get('tag_add')
+        tag.recipe.set(Recipe.objects.filter(id=recipe_id))
+        tag.save()
+        recipe.save()
+        return render(request, "recipe.html", context={"recipe":recipe,})
     try:
         steps_select = recipe.step_set.all()
         ingredient_select = recipe.step_set.all()
@@ -134,4 +143,4 @@ def recipeView(request, recipe_id):
     except(KeyError, recipe.DoesNotExist):
         return render(request, "home.html", {})
     else:
-        return render(request, "recipe.html", context={"recipe": recipe})
+        return render(request, "recipe.html", context={"recipe":recipe,})
