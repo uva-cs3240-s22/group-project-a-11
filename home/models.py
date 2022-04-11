@@ -7,7 +7,7 @@ class Recipe(models.Model):
     recipeTitle = models.CharField(max_length=200)
     recipeText = models.TextField()
     image = models.FileField(upload_to='recipeImages', null=True)
-    like = models.ManyToManyField(User, default=None, blank=True, related_name="like")
+    likes = models.ManyToManyField(User, related_name="likes")
     writer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="writer")
 
     time_to_make = models.IntegerField(default=60)
@@ -45,18 +45,6 @@ class Ingredients(models.Model):
 
     def __str__(self):
         return self.name
-
-
-for_favorite = (('Like', 'Like'), ('Unlike', 'Unlike'))
-
-
-class Favorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    recipe_liked = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    like_option = models.CharField(choices=for_favorite, default='Like', max_length=10)
-
-    def __str__(self):
-        return str(self.recipe_liked)
 
 
 class Meal_Type(models.Model):
