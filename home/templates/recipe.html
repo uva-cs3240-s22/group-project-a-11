@@ -12,6 +12,7 @@
 {% block content %}
     <!-- title -->
 
+    {{ recipe.total_likes }}
     {% csrf_token %}
     <h1 class="mt-3 text-center"> {{recipe.recipeTitle}} </h1>
 
@@ -54,14 +55,19 @@
         <div class="row">
             <div class="col"><h4>{{recipe.time_to_make}} min</h4></div>
             <div class="col text-end">
-                <form action="{% url 'favorite-view' %}" method='POST'>
+                <form action="{% url 'like' recipe.id %}" method='POST'>
                 {% csrf_token %}
-
-                {% if True %}
-                    <button class="btn btn-primary" type="submit">Like</button>
-                {% else %}
-                    <button class="btn btn-primary" type="submit" >Unlike</button>
-                {% endif %}
+                    {% if user.is_authenticated %}
+                        {% if user in recipe.likes.all %}
+                        <button class="btn btn-danger", type="submit", name="button_id",
+                        value="{{recipe.id}}">Unlike</button>
+                        {% else %}
+                        <button class="btn btn-primary", type="submit", name="button_id",
+                        value="{{recipe.id}}">Like</button>
+                        {% endif %}
+                    {% else %}
+                    <small>Must log in to like</small>
+                    {% endif %}
                 </form>
             </div>
             <form method="POST">

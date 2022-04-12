@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-from .models import Recipe, Step, Ingredient, Favorite, Tag
+from .models import Recipe, Step, Ingredient, Tag
 
 
 # Create your views here.
@@ -14,27 +14,18 @@ def home_view(request):
     return render(request, "home.html", {})
 
 
-def favorite_view(request):
-    user = request.user
-    if request.method == 'POST':
-        recipe_id = request.POST.get(
-            'post_id')  # needs to be implemented in the main html (post_id needs to be defined)
-        recipe_object = Recipe.objects.get(id=recipe_id)
-        if user in recipe_object.like.all():
-            recipe_object.like.remove(user)
+def likeView(request, pk):
+    recipe = get_object_or_404(Recipe, id=request.POST.get('button_id'))
 
-        else:
-            recipe_object.like.add(user)
+    liked = False
+    if recipe.likes.filter(id=request.user.id).exists():
+        recipe.likes.remove(request.user)
+        liked = False
+    else:
+        recipe.likes.add(request.user)
+        liked = True
 
-        like_it, create = Favorite.objects.get_or_create(user=user, post_id=recipe_id)
-        if not create:
-            if like_it.value == "Like":
-                like_it.value = "Unlike"
-            else:
-                like_it.value = "Like"
-
-        like_it.save()
-        return HttpResponseRedirect(reverse('recipe', args=recipe_id))
+    return HttpResponseRedirect(reverse('recipe', args=[str(pk)]))
 
 
 def add_ingredient(request, recipe_id):
@@ -140,6 +131,7 @@ def recipeView(request, recipe_id):
         ingredient_select = recipe.step_set.all()
         meal_type_select = recipe.meal_type_set.all()
         cuisine_type_select = recipe.cuisine_type_set.all()
+        total_likes = recipe.total_likes()
     except(KeyError, recipe.DoesNotExist):
         return render(request, "home.html", {})
     else:
