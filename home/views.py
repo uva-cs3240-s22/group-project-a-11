@@ -131,6 +131,7 @@ def recipeView(request, recipe_id):
         ingredient_select = recipe.step_set.all()
         meal_type_select = recipe.meal_type_set.all()
         cuisine_type_select = recipe.cuisine_type_set.all()
+        total_likes = recipe.total_likes()
     except(KeyError, recipe.DoesNotExist):
         return render(request, "home.html", {})
     else:
