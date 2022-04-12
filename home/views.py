@@ -16,8 +16,8 @@ def home_view(request):
 
 def likeView(request, pk):
     recipe = get_object_or_404(Recipe, id=request.POST.get('button_id'))
-
     liked = False
+
     if recipe.likes.filter(id=request.user.id).exists():
         recipe.likes.remove(request.user)
         liked = False
