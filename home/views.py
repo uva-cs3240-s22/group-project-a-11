@@ -113,3 +113,14 @@ def recipeView(request, recipe_id):
         return render(request, "home.html", {})
     else:
         return render(request, "recipe.html", context={"recipe": recipe})
+
+
+def feed_view(request):
+    sort_by = "id"
+    if request.method == 'GET' and 'sort' in request.GET:
+        sort_by = request.GET['sort']
+    if request.method == 'GET' and 'r' in request.GET:
+        sort_by = "-" + sort_by
+
+    all_recipes = Recipe.objects.all().order_by(sort_by)
+    return render(request, "feed.html", context={"recipes": all_recipes, "sort": sort_by})
