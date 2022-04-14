@@ -112,7 +112,7 @@ def recipeView(request, recipe_id):
     except(KeyError, recipe.DoesNotExist):
         return render(request, "home.html", {})
     else:
-        return render(request, "recipe.html", context={"recipe": recipe})
+        return render(request, "recipe.html", context={"recipe": recipe, "author": recipe.writer})
 
 
 def feed_view(request):
