@@ -36,7 +36,7 @@ def add_ingredient(request, recipe_id):
         ingred.recipe.set(Recipe.objects.filter(id=recipe_id))
         recipe.save()
         ingred.save()
-        return render(request, "recipe.html", context={"recipe": recipe})
+        return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
     else:
         return render(request, "ingredientSubmission.html", {})
 
@@ -50,7 +50,7 @@ def add_step(request, recipe_id):
         step.recipe.set(Recipe.objects.filter(id=recipe_id))
         recipe.save()
         step.save()
-        return render(request, "recipe.html", context={"recipe": recipe})
+        return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
     else:
         return render(request, "stepSubmission.html", {})
 
@@ -77,7 +77,7 @@ def submit_recipe(request):
         newRecipe.save()
         ingred.save()
         step.save()
-        return render(request, "recipe.html", context={"recipe": newRecipe})
+        return HttpResponseRedirect(reverse('recipe', args=[recid]))
     else:
         return render(request, "recipeSubmission.html", {})
 
@@ -85,13 +85,13 @@ def submit_recipe(request):
 def delete_ingredient(request, ingredient_id, recipe_id):
     ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
     ingredient.delete()
-    return HttpResponseRedirect(reverse('recipe', args=recipe_id))
+    return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
 
 
 def delete_step(request, step_id, recipe_id):
     step = get_object_or_404(Step, pk=step_id)
     step.delete()
-    return HttpResponseRedirect(reverse('recipe', args=(recipe_id,)))
+    return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
 
 
 def recipeView(request, recipe_id):
