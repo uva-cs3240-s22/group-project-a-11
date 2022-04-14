@@ -7,7 +7,7 @@ class Recipe(models.Model):
     recipeTitle = models.CharField(max_length=200)
     recipeText = models.TextField()
     image = models.FileField(upload_to='recipeImages', null=True)
-    likes = models.ManyToManyField(User, related_name="likes")
+    likes = models.ManyToManyField(User, related_name="likes", blank=True)
     writer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="writer")
 
     def total_likes(self):
