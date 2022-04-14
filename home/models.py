@@ -37,7 +37,7 @@ class Recipe(models.Model):
 
     @property
     def number_of_likes(self):
-        return self.like.all().count()
+        return self.likes.all().count()
 
 
 class Ingredients(models.Model):
@@ -86,8 +86,10 @@ class Step(models.Model):
     def __str__(self):
         return str(self.text)
 
+
 class Tag(models.Model):
     tag = models.CharField(max_length=500, default="")
     recipe = models.ManyToManyField(Recipe)
+
     def __str__(self):
         return str(self.tag)

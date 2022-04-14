@@ -1,9 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.views import generic
-from django.utils import timezone
-from .models import Recipe, Step, Ingredient, Tag, User
+from .models import Recipe, Step, Ingredient, Tag
 
 
 # Create your views here.
@@ -17,13 +15,10 @@ def home_view(request):
 def likeView(request, pk):
     recipe = get_object_or_404(Recipe, id=request.POST.get('button_id'))
 
-    liked = False
     if recipe.likes.filter(id=request.user.id).exists():
         recipe.likes.remove(request.user)
-        liked = False
     else:
         recipe.likes.add(request.user)
-        liked = True
 
     return HttpResponseRedirect(reverse('recipe', args=[str(pk)]))
 
@@ -99,24 +94,6 @@ def delete_step(request, step_id, recipe_id):
     return HttpResponseRedirect(reverse('recipe', args=(recipe_id,)))
 
 
-def template_testing_view_recipe(request):
-    """
-    A view to allow templates to be created before the backend is ready
-    Should be removed for final release
-    Written by Ben
-    """
-    return render(request, "add_recipe.html", {})
-
-
-def template_testing_view_feed(request):
-    """
-    A view to allow templates to be created before the backend is ready
-    Should be removed for final release
-    Written by Ben
-    """
-    return render(request, "feed.html", {})
-
-
 def recipeView(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     if 'tag_add' in request.POST:
@@ -125,7 +102,7 @@ def recipeView(request, recipe_id):
         tag.recipe.set(Recipe.objects.filter(id=recipe_id))
         tag.save()
         recipe.save()
-        return render(request, "recipe.html", context={"recipe":recipe,})
+        return render(request, "recipe.html", context={"recipe": recipe})
     try:
         steps_select = recipe.step_set.all()
         ingredient_select = recipe.step_set.all()
@@ -135,4 +112,4 @@ def recipeView(request, recipe_id):
     except(KeyError, recipe.DoesNotExist):
         return render(request, "home.html", {})
     else:
-        return render(request, "recipe.html", context={"recipe":recipe,})
+        return render(request, "recipe.html", context={"recipe": recipe})

@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from home.views import submit_recipe
-from home.views import home_view, template_testing_view_recipe, recipeView, template_testing_view_feed, add_step, \
+from home.views import home_view, recipeView, add_step, \
     add_ingredient, delete_ingredient, likeView, delete_step
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -26,9 +26,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path('', home_view, name='home'),
     path('recipeSubmission', submit_recipe, name='recipeSubmission'),
-    path('recipe-template-testing/', template_testing_view_recipe, name="recipe_template-testing"),
     path('recipe/<int:recipe_id>', recipeView, name="recipe"),
-    path('feed-template-testing/', template_testing_view_feed, name="feed_template-testing"),
     path('ingredAdd/<int:recipe_id>', add_ingredient, name="ingredient-adding"),
     path('stepAdd/<int:recipe_id>', add_step, name="step-adding"),
     path('deleteI/<int:recipe_id>/<int:ingredient_id>', delete_ingredient, name="delete-ingredient"),
