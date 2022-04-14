@@ -1,9 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.views import generic
-from django.utils import timezone
-from .models import Recipe, Step, Ingredient, Tag, User
+from .models import Recipe, Step, Ingredient, Tag
 
 
 # Create your views here.
@@ -17,13 +15,10 @@ def home_view(request):
 def likeView(request, pk):
     recipe = get_object_or_404(Recipe, id=request.POST.get('button_id'))
 
-    liked = False
     if recipe.likes.filter(id=request.user.id).exists():
         recipe.likes.remove(request.user)
-        liked = False
     else:
         recipe.likes.add(request.user)
-        liked = True
 
     return HttpResponseRedirect(reverse('recipe', args=[str(pk)]))
 
@@ -41,7 +36,7 @@ def add_ingredient(request, recipe_id):
         ingred.recipe.set(Recipe.objects.filter(id=recipe_id))
         recipe.save()
         ingred.save()
-        return render(request, "recipe.html", context={"recipe": recipe})
+        return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
     else:
         return render(request, "ingredientSubmission.html", {})
 
@@ -55,7 +50,7 @@ def add_step(request, recipe_id):
         step.recipe.set(Recipe.objects.filter(id=recipe_id))
         recipe.save()
         step.save()
-        return render(request, "recipe.html", context={"recipe": recipe})
+        return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
     else:
         return render(request, "stepSubmission.html", {})
 
@@ -82,7 +77,7 @@ def submit_recipe(request):
         newRecipe.save()
         ingred.save()
         step.save()
-        return render(request, "recipe.html", context={"recipe": newRecipe})
+        return HttpResponseRedirect(reverse('recipe', args=[recid]))
     else:
         return render(request, "recipeSubmission.html", {})
 
@@ -90,31 +85,13 @@ def submit_recipe(request):
 def delete_ingredient(request, ingredient_id, recipe_id):
     ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
     ingredient.delete()
-    return HttpResponseRedirect(reverse('recipe', args=recipe_id))
+    return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
 
 
 def delete_step(request, step_id, recipe_id):
     step = get_object_or_404(Step, pk=step_id)
     step.delete()
-    return HttpResponseRedirect(reverse('recipe', args=(recipe_id,)))
-
-
-def template_testing_view_recipe(request):
-    """
-    A view to allow templates to be created before the backend is ready
-    Should be removed for final release
-    Written by Ben
-    """
-    return render(request, "add_recipe.html", {})
-
-
-def template_testing_view_feed(request):
-    """
-    A view to allow templates to be created before the backend is ready
-    Should be removed for final release
-    Written by Ben
-    """
-    return render(request, "feed.html", {})
+    return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
 
 
 def recipeView(request, recipe_id):
@@ -125,7 +102,7 @@ def recipeView(request, recipe_id):
         tag.recipe.set(Recipe.objects.filter(id=recipe_id))
         tag.save()
         recipe.save()
-        return render(request, "recipe.html", context={"recipe":recipe,})
+        return render(request, "recipe.html", context={"recipe": recipe})
     try:
         steps_select = recipe.step_set.all()
         ingredient_select = recipe.step_set.all()
@@ -135,4 +112,15 @@ def recipeView(request, recipe_id):
     except(KeyError, recipe.DoesNotExist):
         return render(request, "home.html", {})
     else:
-        return render(request, "recipe.html", context={"recipe":recipe,})
+        return render(request, "recipe.html", context={"recipe": recipe, "author": recipe.writer})
+
+
+def feed_view(request):
+    sort_by = "id"
+    if request.method == 'GET' and 'sort' in request.GET:
+        sort_by = request.GET['sort']
+    if request.method == 'GET' and 'r' in request.GET:
+        sort_by = "-" + sort_by
+
+    all_recipes = Recipe.objects.all().order_by(sort_by)
+    return render(request, "feed.html", context={"recipes": all_recipes, "sort": sort_by})

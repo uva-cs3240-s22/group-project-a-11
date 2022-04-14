@@ -7,7 +7,7 @@ class Recipe(models.Model):
     recipeTitle = models.CharField(max_length=200)
     recipeText = models.TextField()
     image = models.FileField(upload_to='recipeImages', null=True)
-    likes = models.ManyToManyField(User, related_name="likes")
+    likes = models.ManyToManyField(User, related_name="likes", blank=True)
     writer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="writer")
 
     def total_likes(self):
@@ -37,7 +37,7 @@ class Recipe(models.Model):
 
     @property
     def number_of_likes(self):
-        return self.like.all().count()
+        return self.likes.all().count()
 
 
 class Ingredients(models.Model):
@@ -86,8 +86,10 @@ class Step(models.Model):
     def __str__(self):
         return str(self.text)
 
+
 class Tag(models.Model):
     tag = models.CharField(max_length=500, default="")
     recipe = models.ManyToManyField(Recipe)
+
     def __str__(self):
         return str(self.tag)
