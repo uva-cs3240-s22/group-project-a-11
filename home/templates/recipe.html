@@ -87,9 +87,11 @@
         <div class="row mt-1">
             <div class="col"><h4>Posted by {{ recipe.writer.username }}</h4></div>
             <div class="col text-end">
+                <a href="{% url 'forking' recipe.id %}">
                 <button type="button" class="btn btn-primary" {% if not user.is_authenticated %}disabled{% endif %}>
                     Fork
                 </button>
+                </a>
             </div>
         </div>
     </div>

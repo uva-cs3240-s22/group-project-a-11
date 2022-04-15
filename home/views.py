@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib.auth.models import User
 from .models import Recipe, Step, Ingredient, Tag, User
 
 
@@ -79,6 +80,7 @@ def submit_recipe(request):
         ingred.quantity = unit_amount
         step.recipe.set(Recipe.objects.filter(id=recid))
         ingred.recipe.set(Recipe.objects.filter(id=recid))
+        newRecipe.user = request.user
         newRecipe.save()
         ingred.save()
         step.save()
@@ -136,3 +138,23 @@ def recipeView(request, recipe_id):
         return render(request, "home.html", {})
     else:
         return render(request, "recipe.html", context={"recipe":recipe,})
+
+def fork(request, recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    recipe2 = get_object_or_404(Recipe, pk=recipe_id)
+    recipe.pk = None
+    recipe.writer = User.objects.get(username=request.user)
+    recipe.save()
+    recipe.parentRecipe = recipe2
+    recipe.save()
+    for step in recipe2.step_set.all():
+        step.pk = None
+        step.save()
+        step.recipe.set(Recipe.objects.filter(id=recipe.id))
+        step.save()
+    for ingredient in recipe2.ingredient_set.all():
+        ingredient.pk = None
+        ingredient.save()
+        ingredient.recipe.set(Recipe.objects.filter(id=recipe.id))
+        ingredient.save()
+    return HttpResponseRedirect(reverse('recipe', args=(recipe.id,)))
