@@ -17,9 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from home.views import submit_recipe
 from home.views import home_view, recipeView, add_step, \
-    add_ingredient, delete_ingredient, likeView, delete_step, feed_view
-from home.views import home_view, template_testing_view_recipe, recipeView, template_testing_view_feed, add_step, \
-    add_ingredient, delete_ingredient, likeView, delete_step, fork
+    add_ingredient, delete_ingredient, likeView, delete_step, feed_view, fork
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 app_name = 'wordOfMouth'
