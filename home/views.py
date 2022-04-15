@@ -128,7 +128,6 @@ def feed_view(request):
 
     all_recipes = Recipe.objects.all().order_by(sort_by)
     return render(request, "feed.html", context={"recipes": all_recipes, "sort": sort_by})
-        return render(request, "recipe.html", context={"recipe":recipe,})
 
 def fork(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
