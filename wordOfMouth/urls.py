@@ -34,8 +34,8 @@ urlpatterns = [
     path('deleteI/<int:recipe_id>/<int:ingredient_id>', delete_ingredient, name="delete-ingredient"),
     path('deleteS/<int:recipe_id>/<int:step_id>', delete_step, name="delete-step"),
     path('like/<int:pk>', likeView, name='like'),
-    path('feed', feed_view, name="feed")
-    path('fork/<int:recipe_id>', fork, name="forking")
+    path('feed', feed_view, name="feed"),
+    path('fork/<int:recipe_id>', fork, name="forking"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
