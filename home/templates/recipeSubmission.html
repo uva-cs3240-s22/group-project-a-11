@@ -14,7 +14,7 @@
 
 {% block content %}
     <h1 class="mt-3 text-center"> Create a New Recipe </h1>
-    <form method="POST" class="form-control p-3 mt-3">
+    <form method="POST" class="form-control p-3 mt-3" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="mb-3">
             <label for="recipe-title-input" class="form-label">Title Your Recipe:</label>
@@ -36,6 +36,16 @@
             <div class="col">
                 <label for="recipe-ingredient-amount-input" class="form-label">Add Ingredient Amount:</label>
                 <input type="number" name='amount' class="form-control" id="recipe-ingredient-amount-input"/>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <div class="col">
+                <label for="image" class="form-label">Upload an image:</label>
+                <input class="form-control" name="img_url" type="file" id="recipe-image">
+            </div>
+            <div class="col">
+                <label for="time-to-make" class="form-label">Preparation Time:</label>
+                <input type="number" name='time_to_make' class="form-control" id="time-to-make"/>
             </div>
         </div>
 
