@@ -27,10 +27,12 @@
             {% for recipe in recipes %}
                 <div class="col">
                     <div class="card">
+                        {% if recipe.image.url is not None%}
                         <a href="/recipe/{{ recipe.id }}" class="stretched-link">
-                            <img src="{% static 'home/img/img1.png' %}" class="card-img-top"
+                            <img src="{{ recipe.image.url }}" class="card-img-top"
                                  style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover;" alt="Photo of cereal">
                         </a>
+                        {% endif %}
                         <div class="card-body">
                             <div class="row">
                                 <div class="col"><h5 class="card-title">{{recipe.recipeTitle}}</h5></div>
