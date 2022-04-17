@@ -1,10 +1,11 @@
+from xml.etree.ElementTree import Comment
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.models import User
-from .models import Recipe, Step, Ingredient, Tag, User
+from .models import Recipe, Step, Ingredient, Tag, User, RecipeComment
 
 
 # Create your views here.
@@ -57,6 +58,20 @@ def add_step(request, recipe_id):
     else:
         return render(request, "stepSubmission.html", {})
 
+def add_comment(request,recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    if(request.method == "POST"):
+        comment_text = request.POST.get('text')
+        comment = RecipeComment.objects.create()
+        # print("Comment text: ")
+        # print(comment_text)
+        comment.text = comment_text 
+        comment.recipe.set(Recipe.objects.filter(id=recipe_id))
+        recipe.save()
+        comment.save()
+        return render(request, "recipe.html", context={"recipe":recipe,})
+    else:
+        return render(request, "commentSubmission.html", {})
 
 def submit_recipe(request):
     if request.method == "POST":

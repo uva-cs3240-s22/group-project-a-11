@@ -1,3 +1,4 @@
+from xml.etree.ElementTree import Comment
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -93,3 +94,9 @@ class Tag(models.Model):
 
     def __str__(self):
         return str(self.tag)
+
+class RecipeComment(models.Model):
+    text = models.CharField(max_length=500, default="")
+    recipe = models.ManyToManyField(Recipe)
+    def __str__(self):
+        return str(self.text)
