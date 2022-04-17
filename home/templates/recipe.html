@@ -90,17 +90,17 @@
     <div class="row mt-1">
         <h5>Tags</h5>
         <p>
-        {% for tag in recipe.tag_set.all %}
-            {{tag.tag}}{% if not forloop.last %}, {% endif %}
-        {% endfor %}
+            {% for tag in recipe.tag_set.all %}
+                {{tag.tag}}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
         </p>
         {% if user.username == recipe.writer.username %}
-        <form method="POST">
-            {% csrf_token %}
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Add a Tag" name="tag_add">
-            </div>
-        </form>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Add a Tag" name="tag_add">
+                </div>
+            </form>
         {% endif %}
     </div>
 </div>
@@ -149,39 +149,36 @@
         </a>
     {% endif %}
 </div>
-<ol>
-    <div class="accordion" id="stepAccordion">
-        {% for step in recipe.step_set.all %}
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseOne">
-                        Step {{ forloop.counter }}
-                    </button>
-                </h2>
-                <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse collapsed" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#accordionExample">
-                    <div class="accordion-body d-flex flex-direction-row justify-content-between">
-                        <div>{{step.text}}</div>
-                        {% if user.username == recipe.writer.username %}
-                            <div>
-                                <a href="{% url 'delete-step' recipe.id step.id %}">
-                                    <button type="button" class="btn btn-secondary" onclick="return confirm('Are you sure you would like to delete this step?')">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
-                                        </svg>
-                                        Delete Step
-                                        <span class="visually-hidden">Button</span>
-                                    </button>
-                                </a>
-                            </div>
-                        {% endif %}
-                    </div>
+<div class="accordion" id="stepAccordion">
+    {% for step in recipe.step_set.all %}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseOne">
+                    Step {{ forloop.counter }}
+                </button>
+            </h2>
+            <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse collapsed" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#accordionExample">
+                <div class="accordion-body d-flex flex-direction-row justify-content-between">
+                    <div>{{step.text}}</div>
+                    {% if user.username == recipe.writer.username %}
+                        <div>
+                            <a href="{% url 'delete-step' recipe.id step.id %}">
+                                <button type="button" class="btn btn-secondary" onclick="return confirm('Are you sure you would like to delete this step?')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                                    </svg>
+                                    Delete Step
+                                    <span class="visually-hidden">Button</span>
+                                </button>
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
-
             </div>
-        {% endfor %}
-    </div>
 
-</ol>
+        </div>
+    {% endfor %}
+</div>
 <!-- comments -->
 <!-- TODO: Do we need to paginate comments (bc they could make the page really long) -->
 <div class="ingredients-directions-header">
