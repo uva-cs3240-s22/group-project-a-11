@@ -183,7 +183,9 @@
 <!-- TODO: Do we need to paginate comments (bc they could make the page really long) -->
 <div class="ingredients-directions-header">
     <h4>Comments</h4>
-    <a href="{% url 'comment-adding' recipe.id %}" class="btn btn-primary" role="button">Add Comment</a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'comment-adding' recipe.id %}" class="btn btn-primary mt-1" role="button">Add Comment</a>
+    {% endif %}
 </div>
 <div class="container">
 
