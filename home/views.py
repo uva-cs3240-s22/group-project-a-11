@@ -6,7 +6,6 @@ from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.models import User
 from .models import Recipe, Step, Ingredient, Tag, User, RecipeComment
-import pdb
 
 # Create your views here.
 def home_view(request):
@@ -75,7 +74,6 @@ def add_comment(request,recipe_id):
 
 def submit_recipe(request):
     if request.method == "POST":
-        breakpoint()
         recipe_title = request.POST.get('title')
         step_text = request.POST.get('text')
         ingredient_name = request.POST.get('ingredient')
