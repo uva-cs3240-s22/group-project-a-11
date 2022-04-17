@@ -18,34 +18,34 @@
         {% csrf_token %}
         <div class="mb-3">
             <label for="recipe-title-input" class="form-label">Title Your Recipe:</label>
-            <input type="text" name='title' class="form-control" id="recipe-title-input">
+            <input type="text" name='title' class="form-control" id="recipe-title-input" required>
         </div>
         <div class="mb-3">
-            <label for="recipe-instructions-input" class="form-label">Add Instructions:</label>
-            <input type="text" name='text' class="form-control" id="recipe-instructions-input">
+            <label for="recipe-instructions-input" class="form-label">Add Your First Instruction (more can be added later):</label>
+            <input type="text" name='text' class="form-control" id="recipe-instructions-input" required>
         </div>
         <div class="mb-3 row">
             <div class="col">
-                <label for="recipe-ingredient-input" class="form-label">Add an Ingredient:</label>
-                <input type="text" name='ingredient' class="form-control" id="recipe-ingredient-input">
+                <label for="recipe-ingredient-input" class="form-label">Add Your First Ingredient (more can be added later):</label>
+                <input type="text" name='ingredient' class="form-control" id="recipe-ingredient-input" required>
             </div>
             <div class="col">
-                <label for="recipe-ingredient-unit-input" class="form-label">Add Ingredient Units:</label>
-                <input type="text" name='units' class="form-control" id="recipe-ingredient-unit-input">
+                <label for="recipe-ingredient-unit-input" class="form-label">Ingredient Units:</label>
+                <input type="text" name='units' class="form-control" id="recipe-ingredient-unit-input" required>
             </div>
             <div class="col">
-                <label for="recipe-ingredient-amount-input" class="form-label">Add Ingredient Amount:</label>
-                <input type="number" name='amount' class="form-control" id="recipe-ingredient-amount-input"/>
+                <label for="recipe-ingredient-amount-input" class="form-label">Ingredient Amount:</label>
+                <input type="number" name='amount' class="form-control" id="recipe-ingredient-amount-input" required/>
             </div>
         </div>
         <div class="mb-3 row">
             <div class="col">
                 <label for="image" class="form-label">Upload an image:</label>
-                <input class="form-control" name="img_url" type="file" id="recipe-image">
+                <input class="form-control" name="img_url" type="file" id="recipe-image" required>
             </div>
             <div class="col">
-                <label for="time-to-make" class="form-label">Preparation Time:</label>
-                <input type="number" name='time_to_make' class="form-control" id="time-to-make"/>
+                <label for="time-to-make" class="form-label">Preparation Time (minutes):</label>
+                <input type="number" name='time_to_make' class="form-control" id="time-to-make" required/>
             </div>
         </div>
 
