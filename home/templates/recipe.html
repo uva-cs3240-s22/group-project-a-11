@@ -99,6 +99,11 @@
         <a href="{% url 'comment-adding' recipe.id %}" class="btn btn-primary" role="button">Add Comment</a>
     </div>
     <div class="container">
+        
+        {% for comment in recipe.recipecomment_set.all %}
+        <li>{{comment.text}}</li>
+        {% endfor %}
+        
         {% for comment in recipe.recipecomment_set.all %}
             <div class="card mb-3">
                 <div class="card-body">
