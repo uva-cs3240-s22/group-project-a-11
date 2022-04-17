@@ -15,6 +15,14 @@
 
     {% csrf_token %}
     <h1 class="mt-3 text-center"> {{recipe.recipeTitle}} </h1>
+    {% if user.username == recipe.writer.username %}
+        <form method="POST">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Change Title" name="name_change">
+                </div>
+            </form>
+    {% endif %}
 
     <!-- image carousel -->
     <!-- TODO: fix the max-width of the carousel-->
@@ -79,6 +87,13 @@
     </div>
     <div class="row mt-1">
         <div class="col"><h4>Posted by {{ recipe.writer }} </h4></div>
+        {% if recipe.parentRecipe != self %}
+            <div class="col">
+                <a href="{% url 'recipe' recipe.parentRecipe.id %}">
+                    <h4>Parent Recipe by {{ recipe.parentRecipe.writer.username }}</h4>
+                </a>
+            </div>
+        {% endif %}
         <div class="col text-end">
             <a href="{% url 'forking' recipe.id %}">
                 <button type="button" class="btn btn-primary" {% if not user.is_authenticated %}disabled{% endif %}>
