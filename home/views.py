@@ -68,7 +68,7 @@ def add_comment(request,recipe_id):
         comment.recipe.set(Recipe.objects.filter(id=recipe_id))
         recipe.save()
         comment.save()
-        return render(request, "recipe.html", context={"recipe":recipe,})
+        return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
     else:
         return render(request, "commentSubmission.html", {})
 
