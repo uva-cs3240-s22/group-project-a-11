@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block title %}
+    Add Comments - Word of Mouth
+{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group d-flex justify-content-center text-center">
+            {% bootstrap_label "Add a Comment" recipe.recipeTitle %}
+            <input type = 'text' name = 'text'>
+        </div>
+        {% buttons %}
+            <button type "submit" class="btn btn-primary justify-content-right">
+                Submit
+            </button>
+        {% endbuttons%}
+    </form>
+{% endblock %}
