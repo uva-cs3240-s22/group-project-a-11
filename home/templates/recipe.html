@@ -19,169 +19,179 @@
     <!-- image carousel -->
     <!-- TODO: fix the max-width of the carousel-->
     <!-- TODO: restrict length of captions because they're going to cover the photo-->
-    <div id="recipeImages" class="carousel slide container" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#recipeImages" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#recipeImages" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#recipeImages" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
+    {% if recipe.image.url is not None%}
+        <div id="recipeImages" class="carousel slide container" data-bs-ride="carousel">
+        {#        <div class="carousel-indicators">#}
+        {#            <button type="button" data-bs-target="#recipeImages" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>#}
+        {#            <button type="button" data-bs-target="#recipeImages" data-bs-slide-to="1" aria-label="Slide 2"></button>#}
+        {#            <button type="button" data-bs-target="#recipeImages" data-bs-slide-to="2" aria-label="Slide 3"></button>#}
+        {#        </div>#}
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{% static 'home/img/img1.png' %}" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <p>This is a caption of the first photo</p>
-                </div>
+                <img src="{{ recipe.image.url }}" class="d-block w-100" alt="...">
+                {#                <div class="carousel-caption d-none d-md-block">#}
+                {#                    <p>This is a caption of the first photo</p>#}
+                {#                </div>#}
+                {#            </div>#}
+                {#            <div class="carousel-item">#}
+                {#                <img src="{% static 'home/img/img2.png' %}" class="d-block w-100" alt="...">#}
+                {#            </div>#}
+                {#            <div class="carousel-item">#}
+                {#                <img src="{% static 'home/img/img3.png' %}" class="d-block w-100" alt="...">#}
+                {#            </div>#}
             </div>
-            <div class="carousel-item">
-                <img src="{% static 'home/img/img2.png' %}" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="{% static 'home/img/img3.png' %}" class="d-block w-100" alt="...">
-            </div>
+            {#        <button class="carousel-control-prev" type="button" data-bs-target="#recipeImages" data-bs-slide="prev">#}
+            {#            <span class="carousel-control-prev-icon" aria-hidden="true"></span>#}
+            {#            <span class="visually-hidden">Previous</span>#}
+            {#        </button>#}
+            {#        <button class="carousel-control-next" type="button" data-bs-target="#recipeImages" data-bs-slide="next">#}
+            {#            <span class="carousel-control-next-icon" aria-hidden="true"></span>#}
+            {#            <span class="visually-hidden">Next</span>#}
+            {#        </button>#}
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#recipeImages" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#recipeImages" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-    <!-- caption -->
-    <!-- time | rating -->
-    <!-- author | fork -->
-    <div class="recipe-metadata container mt-3 mb-3">
-        <div class="row">
-            <div class="col"><h4>{{recipe.time_to_make}} minutes</h4></div>
-            <div class="col text-end d-flex justify-content-end">
-                <div style="margin-right: 1em; margin-top: 0.5em">
-                    <h5>{{ recipe.total_likes }} <i class="bi bi-heart-fill"></i></h5>
-                </div>
-
-                <form action="{% url 'like' recipe.id %}" method='POST'>
-                    {% csrf_token %}
-                    {% if user.is_authenticated %}
-                        {% if user in recipe.likes.all %}
-                            <button class="btn btn-danger" type="submit" name="button_id"
-                                    value="{{recipe.id}}"><i class="bi bi-heart"></i> Unlike</button>
-                        {% else %}
-                            <button class="btn btn-primary" type="submit" name="button_id"
-                                    value="{{recipe.id}}"><i class="bi bi-heart-fill"></i> Like</button>
-                        {% endif %}
-                    {% else %}
-                        <small>Must log in to like</small>
-                    {% endif %}
-                </form>
+    {% endif %}
+<!-- caption -->
+<!-- time | rating -->
+<!-- author | fork -->
+<div class="recipe-metadata container mt-3 mb-3">
+    <div class="row">
+        <div class="col"><h4>{{recipe.time_to_make}} minutes</h4></div>
+        <div class="col text-end d-flex justify-content-end">
+            <div style="margin-right: 1em; margin-top: 0.5em">
+                <h5>{{ recipe.total_likes }} <i class="bi bi-heart-fill"></i></h5>
             </div>
+
+            <form action="{% url 'like' recipe.id %}" method='POST'>
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                    {% if user in recipe.likes.all %}
+                        <button class="btn btn-danger" type="submit" name="button_id"
+                                value="{{recipe.id}}"><i class="bi bi-heart"></i> Unlike</button>
+                    {% else %}
+                        <button class="btn btn-primary" type="submit" name="button_id"
+                                value="{{recipe.id}}"><i class="bi bi-heart-fill"></i> Like</button>
+                    {% endif %}
+                {% else %}
+                    <small>Must log in to like</small>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col"><h4>Posted by {{ recipe.writer }} </h4></div>
+        <div class="col text-end">
+            <a href="{% url 'forking' recipe.id %}">
+                <button type="button" class="btn btn-primary" {% if not user.is_authenticated %}disabled{% endif %}>
+                    Fork
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <h5>Tags</h5>
+        <p>
+            {% for tag in recipe.tag_set.all %}
+                {{tag.tag}}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        {% if user.username == recipe.writer.username %}
             <form method="POST">
                 {% csrf_token %}
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Add a Tag" name="tag_add">
                 </div>
             </form>
-            {% for tag in recipe.tag_set.all %}
-                <li>{{tag.tag}}</li>
-            {% endfor %}
-        </div>
-        <div class="row mt-1">
-            <div class="col"><h4>Posted by {{ recipe.writer }} </h4></div>
-            <div class="col text-end">
-                <a href="{% url 'forking' recipe.id %}">
-                <button type="button" class="btn btn-primary" {% if not user.is_authenticated %}disabled{% endif %}>
-                    Fork
-                </button>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- ingredients -->
-    <div class="ingredients-directions-header">
-        <h4>Ingredients</h4>
-
-        {% if user.username == recipe.writer.username %}
-            <a href="{% url 'ingredient-adding' recipe.id %}">
-                <button type="button" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
-                    </svg>
-                    Add Ingredient
-                </button>
-            </a>
         {% endif %}
     </div>
-    {#    <p>Makes <input type="number" value="1" id="servings"/> <label for="servings">servings</label></p>#}
-    <ul>
-        {% for ingredient in recipe.ingredient_set.all %}
-            <li>{{ingredient.quantity}} {{ingredient.units}} {{ingredient.name}}
-                {% if user.username == recipe.writer.username %}
-                    <a href="{% url 'delete-ingredient' recipe.id ingredient.id %}" >
-                        <button type="button" class="btn btn-secondary" onclick="return confirm('Are you sure you would like to delete this ingredient?')">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
-                            </svg>
-                            Delete Ingredient
-                        </button>
-                    </a>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-    <!-- directions -->
-    <div class="ingredients-directions-header">
-        <h4>Directions</h4>
-        {% if user.username == recipe.writer.username %}
-            <a href="{% url 'step-adding' recipe.id %}" role="button" class="btn btn-primary">
+</div>
+
+<!-- ingredients -->
+<div class="ingredients-directions-header">
+    <h4>Ingredients</h4>
+
+    {% if user.username == recipe.writer.username %}
+        <a href="{% url 'ingredient-adding' recipe.id %}">
+            <button type="button" class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
                 </svg>
-                Add Step
-            </a>
-        {% endif %}
-    </div>
-    <ol>
-        <div class="accordion" id="stepAccordion">
-            {% for step in recipe.step_set.all %}
-                <div class="accordion-item">
-                    <h2 class="accordion-header" >
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Step
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            {{step.text}}
-                        </div>
-                    </div>
+                Add Ingredient
+            </button>
+        </a>
+    {% endif %}
+</div>
+{#    <p>Makes <input type="number" value="1" id="servings"/> <label for="servings">servings</label></p>#}
+<ul>
+    {% for ingredient in recipe.ingredient_set.all %}
+        <li>{{ingredient.quantity}} {{ingredient.units}} {{ingredient.name}}
+            {% if user.username == recipe.writer.username %}
+                <a href="{% url 'delete-ingredient' recipe.id ingredient.id %}" >
+                    <button type="button" class="btn btn-secondary m-1" onclick="return confirm('Are you sure you would like to delete this ingredient?')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                        </svg>
+                        Delete Ingredient
+                    </button>
+                </a>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+<!-- directions -->
+<div class="ingredients-directions-header">
+    <h4>Directions</h4>
+    {% if user.username == recipe.writer.username %}
+        <a href="{% url 'step-adding' recipe.id %}" role="button" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
+            </svg>
+            Add Step
+        </a>
+    {% endif %}
+</div>
+<div class="accordion" id="stepAccordion">
+    {% for step in recipe.step_set.all %}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseOne">
+                    Step {{ forloop.counter }}
+                </button>
+            </h2>
+            <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse collapsed" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#accordionExample">
+                <div class="accordion-body d-flex flex-direction-row justify-content-between">
+                    <div>{{step.text}}</div>
                     {% if user.username == recipe.writer.username %}
-                        <a href="{% url 'delete-step' recipe.id step.id %}">
-                            <button type="button" class="btn btn-secondary" onclick="return confirm('Are you sure you would like to delete this step?')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
-                                </svg>
-                                <span class="visually-hidden">Button</span>
-                            </button>
-                        </a>
+                        <div>
+                            <a href="{% url 'delete-step' recipe.id step.id %}">
+                                <button type="button" class="btn btn-secondary" onclick="return confirm('Are you sure you would like to delete this step?')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                                    </svg>
+                                    Delete Step
+                                    <span class="visually-hidden">Button</span>
+                                </button>
+                            </a>
+                        </div>
                     {% endif %}
                 </div>
-            {% endfor %}
-        </div>
+            </div>
 
-    </ol>
-    <!-- comments -->
-    <!-- TODO: Do we need to paginate comments (bc they could make the page really long) -->
-    <div class="ingredients-directions-header">
-        <h4>Comments</h4>
-        <a href="{% url 'comment-adding' recipe.id %}" class="btn btn-primary" role="button">Add Comment</a>
-    </div>
-    <div class="container">
-        
-        {% for comment in recipe.recipecomment_set.all %}
+        </div>
+    {% endfor %}
+</div>
+<!-- comments -->
+<!-- TODO: Do we need to paginate comments (bc they could make the page really long) -->
+<div class="ingredients-directions-header">
+    <h4>Comments</h4>
+    <a href="{% url 'comment-adding' recipe.id %}" class="btn btn-primary" role="button">Add Comment</a>
+</div>
+<div class="container">
+
+    {% for comment in recipe.recipecomment_set.all %}
         <li>{{comment.text}}</li>
-        {% endfor %}
-        
-        <!-- {% for comment in recipe.recipecomment_set.all %}
+    {% endfor %}
+
+    <!-- {% for comment in recipe.recipecomment_set.all %}
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row justify-content-between">
@@ -192,6 +202,6 @@
                 </div>
             </div>
         {% endfor %} -->
-    </div>
+</div>
 
 {% endblock %}

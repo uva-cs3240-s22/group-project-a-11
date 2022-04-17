@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from home.views import submit_recipe
-from home.views import home_view, recipeView, add_step, \
+from home.views import recipeView, add_step, \
     add_ingredient, delete_ingredient, likeView, delete_step, feed_view, fork, add_comment
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -24,7 +24,7 @@ app_name = 'wordOfMouth'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),
-    path('', home_view, name='home'),
+    path('', feed_view, name='home'),
     path('recipeSubmission', submit_recipe, name='recipeSubmission'),
     path('recipe/<int:recipe_id>', recipeView, name="recipe"),
     path('ingredAdd/<int:recipe_id>', add_ingredient, name="ingredient-adding"),

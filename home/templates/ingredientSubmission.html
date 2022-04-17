@@ -19,16 +19,16 @@
             {% csrf_token %}
             <div class="mb-3">
                 {% bootstrap_label "Add an Ingredient" recipe.recipeTitle %}
-                <input type = 'text' name = 'ingredient' class="form-control">
+                <input type = 'text' name = 'ingredient' class="form-control" required>
             </div>
             <div class="row">
                 <div class="mb-3 col">
                     {% bootstrap_label "Add your Ingredient's Amount:" %}
-                    <input type="number" name='amount' class="form-control">
+                    <input type="number" name='amount' class="form-control" required>
                 </div>
                 <div class="mb-3 col">
                     {% bootstrap_label "Add your Ingredient's Units:" %}
-                    <input type = 'text' name = 'units' class="form-control">
+                    <input type = 'text' name = 'units' class="form-control" required>
                 </div>
 
             </div>

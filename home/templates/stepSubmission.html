@@ -19,7 +19,7 @@
             {% csrf_token %}
             <div class="mb-3">
                 {% bootstrap_label "Add a Step" recipe.recipeTitle %}
-                <input type = 'text' name = 'text' class="form-control">
+                <input type = 'text' name = 'text' class="form-control" required>
             </div>
             {% buttons %}
                 <button type="submit" class="btn btn-primary justify-content-right">
