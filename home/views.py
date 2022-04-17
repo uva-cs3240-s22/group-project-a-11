@@ -115,6 +115,10 @@ def delete_step(request, step_id, recipe_id):
 
 def recipeView(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
+    if 'name_change' in request.POST:
+        recipe.recipeTitle = request.POST.get('name_change')
+        recipe.save()
+        return render(request, "recipe.html", context={"recipe": recipe})
     if 'tag_add' in request.POST:
         tag = Tag.objects.create()
         tag.tag = request.POST.get('tag_add')
