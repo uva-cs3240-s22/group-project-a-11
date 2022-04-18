@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from .models import Recipe, Step, Ingredient, Tag, User, RecipeComment
-
+from django.db.models import Count
 
 # Create your views here.
 def home_view(request):
@@ -145,7 +145,10 @@ def feed_view(request):
     if request.method == 'GET' and 'r' in request.GET:
         sort_by = "-" + sort_by
 
-    all_recipes = Recipe.objects.all().order_by(sort_by)
+    if sort_by == "likes":
+        all_recipes = Recipe.objects.annotate(q_count=Count('likes')).order_by('-q_count')
+    else:
+        all_recipes = Recipe.objects.all().order_by(sort_by)
     return render(request, "feed.html", context={"recipes": all_recipes, "sort": sort_by})
 
 
