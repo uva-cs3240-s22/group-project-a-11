@@ -22,6 +22,10 @@ def likeView(request, pk):
 
     return HttpResponseRedirect(reverse('recipe', args=[str(pk)]))
 
+def my_recipeView(request):
+    user_recipes = Recipe.objects.filter(writer=request.user)
+    return render(request, recipe.html , {'recipe': user_recipes})
+
 
 def add_ingredient(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
