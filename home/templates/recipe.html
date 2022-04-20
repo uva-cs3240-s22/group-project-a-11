@@ -12,6 +12,7 @@
 {% block content %}
     <!-- title -->
 
+    {{ recipe.total_likes }}
     {% csrf_token %}
     <h1 class="mt-3 text-center"> {{recipe.recipeTitle}} </h1>
 
@@ -57,7 +58,7 @@
                 <form action="{% url 'like' recipe.id %}" method='POST'>
                 {% csrf_token %}
                     {% if user.is_authenticated %}
-                        {% if liked %}
+                        {% if user in recipe.likes.all %}
                         <button class="btn btn-danger", type="submit", name="button_id",
                         value="{{recipe.id}}">Unlike</button>
                         {% else %}
