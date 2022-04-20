@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {{tag.tag}} - Word of Mouth
+{% endblock %}
+
+{% block content %}
+    <h1 class="mt-3 text-center"> Word Of Mouth </h1>
+    <div id="feed" class="w-75 container mt-3 mb-3">
+        <div class="btn-toolbar mb-3 d-flex justify-content-center" role="toolbar" aria-label="Sort Toolbar">
+            <div class="btn-group mr-2" style="margin-right: 1em" role="group" aria-label="Time Created">
+                <a href="/feed" role="button" class="btn {% if sort == "id" %} btn-primary {% else %} btn-secondary {% endif %}">Oldest First</a>
+                <a href="/feed?r=True" role="button" class="btn {% if sort == "-id" %} btn-primary {% else %} btn-secondary {% endif %}">Newest First</a>
+            </div>
+            <div class="btn-group mr-2" style="margin-right: 1em" role="group" aria-label="Name">
+                <a href="/feed?sort=recipeTitle" role="button" class="btn {% if sort == "recipeTitle" %} btn-primary {% else %} btn-secondary {% endif %}">A <i class="bi bi-arrow-right"></i> Z</a>
+                <a href="/feed?sort=recipeTitle&r=True" role="button" class="btn {% if sort == "-recipeTitle" %} btn-primary {% else %} btn-secondary {% endif %}">Z <i class="bi bi-arrow-right"></i> A</a>
+            </div>
+            <div class="btn-group" role="group" aria-label="Likes">
+                <a href="/feed?sort=likes" role="button" class="btn {% if sort == "likes" %} btn-primary {% else %} btn-secondary{% endif %}">Most Liked</a>
+            </div>
+        </div>
+
+
+        <div class="row row-cols-2 row-cols-lg-4 g-4">
+            {% for recipe in recipes %}
+                <div class="col">
+                    <div class="card">
+                        {% if recipe.image.url is not None%}
+                        <a href="/recipe/{{ recipe.id }}" class="stretched-link">
+                            <img src="{{ recipe.image.url }}" class="card-img-top"
+                                 style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover;" alt="Photo of cereal">
+                        </a>
+                        {% endif %}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col"><h5 class="card-title">{{recipe.recipeTitle}}</h5></div>
+                                <div class="col text-end"><p class="text-muted">{{ recipe.time_to_make }} min</p></div>
+                            </div>
+                            <div class="row">
+                                <div class="col"><p class="text-muted mb-0">{{ recipe.writer }}</p></div>
+                                <div class="col text-end">{{ recipe.total_likes }}  <i class="bi bi-heart-fill"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
