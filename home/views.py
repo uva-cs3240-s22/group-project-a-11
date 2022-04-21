@@ -22,6 +22,11 @@ def likeView(request, pk):
 
     return HttpResponseRedirect(reverse('recipe', args=[str(pk)]))
 
+def taggedRecipes(request, tag_id):
+    tagCheck = get_object_or_404(Tag, id=tag_id)
+    recipeTag = Recipe.objects.filter(tag__tag = tagCheck.tag)
+    return render(request,'tagView.html', context={'recipes' : recipeTag, 'tag' : tagCheck})
+
 
 def add_ingredient(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)

@@ -106,7 +106,9 @@
         <h5>Tags</h5>
         <p>
             {% for tag in recipe.tag_set.all %}
-                {{tag.tag}}{% if not forloop.last %}, {% endif %}
+                <a href="{% url 'tagView' tag.id %}">
+                # {{tag.tag}}{% if not forloop.last %}   ,  {% endif %}
+                <a/>
             {% endfor %}
         </p>
         {% if user.username == recipe.writer.username %}
