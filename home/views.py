@@ -25,7 +25,7 @@ def likeView(request, pk):
 def taggedRecipes(request, tag_id):
     tagCheck = get_object_or_404(Tag, id=tag_id)
     recipeTag = Recipe.objects.filter(tag__tag = tagCheck.tag)
-    return render(request,'tagView.html', context={'recipes' : recipeTag})
+    return render(request,'tagView.html', context={'recipes' : recipeTag, 'tag' : tagCheck})
 
 
 def add_ingredient(request, recipe_id):

@@ -107,7 +107,7 @@
         <p>
             {% for tag in recipe.tag_set.all %}
                 <a href="{% url 'tagView' tag.id %}">
-                {{tag.tag}}{% if not forloop.last %}, {% endif %}
+                # {{tag.tag}}{% if not forloop.last %}   ,  {% endif %}
                 <a/>
             {% endfor %}
         </p>
