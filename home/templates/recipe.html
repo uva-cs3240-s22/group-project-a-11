@@ -204,22 +204,17 @@
     {% endif %}
 </div>
 <div class="container">
-
     {% for comment in recipe.recipecomment_set.all %}
-        <li>{{comment.text}}</li>
-    {% endfor %}
-
-    <!-- {% for comment in recipe.recipecomment_set.all %}
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row justify-content-between">
-                        <div class="col"><h5 class="card-title">Poster Username</h5></div>
-                        <div class="col"><p class="text-end">Posted March 1, 2022</p></div>
+                        <div class="col"><h5 class="card-title">{{ comment.writer }}</h5></div>
+                        <div class="col"><p class="text-end">{{ comment.date }}</p></div>
                     </div>
-                    <p class="card-text">comment.text</p>
+                    <p class="card-text">{{comment.text}}</p>
                 </div>
             </div>
-        {% endfor %} -->
+    {% endfor %}
 </div>
 
 {% endblock %}

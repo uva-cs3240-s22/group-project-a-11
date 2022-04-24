@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from .models import Recipe, Step, Ingredient, Tag, User, RecipeComment
 from django.db.models import Count
+import datetime
 
 # Create your views here.
 def home_view(request):
@@ -67,8 +68,9 @@ def add_comment(request, recipe_id):
         comment = RecipeComment.objects.create()
         # print("Comment text: ")
         # print(comment_text)
-        comment.text = comment_text 
+        comment.text = comment_text
         comment.recipe.set(Recipe.objects.filter(id=recipe_id))
+        comment.writer = request.user
         recipe.save()
         comment.save()
         return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
