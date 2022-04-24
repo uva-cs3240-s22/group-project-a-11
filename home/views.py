@@ -26,7 +26,7 @@ def likeView(request, pk):
 class UserRecipes(ListView):
     model = Recipe
     template_name = 'app_name/template_name.html'
-    context_object_name = 'posts'
+    context_object_name = 'recipe'
 
     def get_queryset(self):
         user = get_object_or_404(User,username=self.kwargs.get('username'))
