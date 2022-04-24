@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from .models import Recipe, Step, Ingredient, Tag, User, RecipeComment
 from django.db.models import Count
+from django.views.generic.list import ListView
 
 
 # Create your views here.
@@ -25,14 +26,11 @@ def likeView(request, pk):
 
 
 # meet with Ben and decide on formatting for html file
-class UserRecipes(ListView):
-    model = Recipe
-    template_name = 'wordOfMouth/my_recipes.html'
-    context_object_name = 'recipes'
 
-    def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Recipe.objects.filter(writer=user)
+def user_recipes(request):
+    logged_in_user = request.user
+    logged_in_user_posts = Recipe.objects.filter(writer=logged_in_user)
+    return render(request, 'my_recipes.html', {'recipes': logged_in_user_posts})
 
 
 def add_ingredient(request, recipe_id):
