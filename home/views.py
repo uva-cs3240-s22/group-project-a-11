@@ -126,7 +126,7 @@ def recipeView(request, recipe_id):
         return render(request, "recipe.html", context={"recipe": recipe})
     if 'tag_add' in request.POST:
         tag = Tag.objects.create()
-        tag.tag = request.POST.get('tag_add')
+        tag.tag = request.POST.get('tag_add').title()  # .title() normalizes capitalization to Title Case
         tag.recipe.set(Recipe.objects.filter(id=recipe_id))
         tag.save()
         recipe.save()
