@@ -22,6 +22,16 @@ def likeView(request, pk):
 
     return HttpResponseRedirect(reverse('recipe', args=[str(pk)]))
 
+# meet with Ben and decide which way would be easiest to implement in the html
+class UserRecipes(ListView):
+    model = Recipe
+    template_name = 'app_name/template_name.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        user = get_object_or_404(User,username=self.kwargs.get('username'))
+        return Post.objects.filter(author=user)
+
 def my_recipeView(request):
     user_recipes = Recipe.objects.filter(writer=request.user)
     return render(request, recipe.html , {'recipe': user_recipes})
