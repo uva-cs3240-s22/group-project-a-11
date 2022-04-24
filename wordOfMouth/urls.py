@@ -35,7 +35,7 @@ urlpatterns = [
     path('feed', feed_view, name="feed"),
     path('fork/<int:recipe_id>', fork, name="forking"),
     path('commentAdd/<int:recipe_id>', add_comment, name="comment-adding"),
-    path('myRecipes/', my_recipeView, name=my-recipes),
+    path('user/<str:username>', views.UserRecipes.as_view(), name='user-recipes'),
 
 ]
 

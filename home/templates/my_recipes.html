@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% block content%}
+<h1> My Recipes </h1>
+       {% for recipe in recipes %}
+
+            Username: {{ recipe.writer.username }}
+            Recipe: {{ recipe.RecipeTitle }}
+
+            # PROPER WAY TO FORMAT THE DISPLAY
+
+       {% endfor %}
+          {% endblock %}
+
+</body>
+</html>

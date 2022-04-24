@@ -4,6 +4,7 @@ from django.urls import reverse
 from .models import Recipe, Step, Ingredient, Tag, User, RecipeComment
 from django.db.models import Count
 
+
 # Create your views here.
 def home_view(request):
     """
@@ -22,19 +23,16 @@ def likeView(request, pk):
 
     return HttpResponseRedirect(reverse('recipe', args=[str(pk)]))
 
-# meet with Ben and decide which way would be easiest to implement in the html
+
+# meet with Ben and decide on formatting for html file
 class UserRecipes(ListView):
     model = Recipe
-    template_name = 'app_name/template_name.html'
-    context_object_name = 'recipe'
+    template_name = 'wordOfMouth/my_recipes.html'
+    context_object_name = 'recipes'
 
     def get_queryset(self):
-        user = get_object_or_404(User,username=self.kwargs.get('username'))
-        return Post.objects.filter(author=user)
-
-def my_recipeView(request):
-    user_recipes = Recipe.objects.filter(writer=request.user)
-    return render(request, recipe.html , {'recipe': user_recipes})
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Recipe.objects.filter(writer=user)
 
 
 def add_ingredient(request, recipe_id):
@@ -76,7 +74,7 @@ def add_comment(request, recipe_id):
         comment = RecipeComment.objects.create()
         # print("Comment text: ")
         # print(comment_text)
-        comment.text = comment_text 
+        comment.text = comment_text
         comment.recipe.set(Recipe.objects.filter(id=recipe_id))
         recipe.save()
         comment.save()
