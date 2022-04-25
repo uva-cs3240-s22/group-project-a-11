@@ -28,9 +28,9 @@ def likeView(request, pk):
 # meet with Ben and decide on formatting for html file
 
 def user_recipes(request):
-    logged_in_user = request.user
-    logged_in_user_posts = Recipe.objects.filter(writer=logged_in_user)
-    return render(request, 'my_recipes.html', {'recipes': logged_in_user_posts})
+    the_user = request.user
+    my_recipes = Recipe.objects.filter(writer=the_user)
+    return render(request, 'my_recipes.html', {'recipes': my_recipes})
 
 
 def add_ingredient(request, recipe_id):
