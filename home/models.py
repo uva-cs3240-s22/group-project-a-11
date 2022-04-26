@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.utils import timezone
+import datetime
 
 class Recipe(models.Model):
     published = models.BooleanField(default=False)
@@ -98,6 +99,14 @@ class Tag(models.Model):
 class RecipeComment(models.Model):
     text = models.CharField(max_length=500, default="")
     recipe = models.ManyToManyField(Recipe)
+    writer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="commentWriter")
+    # date = models.DateTimeField("date posted", auto_now=True, null=True)
+
+    # def days_since_posting(self):
+    #     post_date = datetime.datetime.strptime(self.date_posted, "%Y-%m-%d %H:%M")
+    #     now = datetime.datetime.strptime(timezone.now())
+    #     diff = abs((now - post_date).days)
+    #     return diff
 
     def __str__(self):
         return str(self.text)
