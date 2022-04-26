@@ -33,10 +33,24 @@ def likeView(request, pk):
     #return render(request, 'my_liked_recipes.html', {'recipes': my_liked_recipes})
 
 
-def user_recipes(request):
+# def user_recipes(request):
+#     the_user = request.user
+#     my_recipes = Recipe.objects.filter(writer=the_user)
+#     return render(request, 'my_recipes.html', {'recipes': my_recipes})
+
+def recipe_feed_view(request):
     the_user = request.user
-    my_recipes = Recipe.objects.filter(writer=the_user)
-    return render(request, 'my_recipes.html', {'recipes': my_recipes})
+    sort_by = "id"
+    if request.method == 'GET' and 'sort' in request.GET:
+        sort_by = request.GET['sort']
+    if request.method == 'GET' and 'r' in request.GET:
+        sort_by = "-" + sort_by
+
+    if sort_by == "likes":
+        my_recipes = Recipe.objects.filter(writer=the_user).annotate(q_count=Count('likes')).order_by('-q_count')
+    else:
+        my_recipes = Recipe.objects.filter(writer=the_user).order_by(sort_by)
+    return render(request, "my_recipes.html", context={"recipes": my_recipes, "sort": sort_by})
 
 
 def add_ingredient(request, recipe_id):
