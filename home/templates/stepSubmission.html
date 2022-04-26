@@ -13,19 +13,23 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="mt-3 text-center"> Add a Step </h1>
-    <div class="d-flex justify-content-center">
-        <form method="POST" class="form-control p-3 mt-3 w-50">
-            {% csrf_token %}
-            <div class="mb-3">
-                {% bootstrap_label "Add a Step" recipe.recipeTitle %}
-                <input type = 'text' name = 'text' class="form-control" required>
-            </div>
-            {% buttons %}
-                <button type="submit" class="btn btn-primary justify-content-right">
-                    Submit
-                </button>
-            {% endbuttons%}
-        </form>
-    </div>
+    {% if user.is_authenticated %}
+        <h1 class="mt-3 text-center"> Add a Step </h1>
+        <div class="d-flex justify-content-center">
+            <form method="POST" class="form-control p-3 mt-3 w-50">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {% bootstrap_label "Add a Step" recipe.recipeTitle %}
+                    <input type = 'text' name = 'text' class="form-control" required>
+                </div>
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary justify-content-right">
+                        Submit
+                    </button>
+                {% endbuttons%}
+            </form>
+        </div>
+    {% else %}
+        <p class="text-center">Please log in to add a step</p>
+    {% endif %}
 {% endblock %}
