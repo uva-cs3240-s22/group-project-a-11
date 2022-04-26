@@ -49,7 +49,7 @@ def user_liked_recipes(request):
         if recipe.likes.filter(id=request.user.id).exists():
             my_liked_recipes.append(recipe)
 
-    return render(request, 'my_recipes.html', {'recipes': my_liked_recipes, "sort": sort_by})
+    return render(request, 'my_liked_recipes.html', {'recipes': my_liked_recipes, "sort": sort_by})
 
 
 # def user_recipes(request):
