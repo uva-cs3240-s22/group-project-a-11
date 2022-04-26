@@ -15,14 +15,15 @@ def home_view(request):
 
 
 def likeView(request, pk):
-    recipe = get_object_or_404(Recipe, id=request.POST.get('button_id'))
+    if request.user.is_authenticated:
+        recipe = get_object_or_404(Recipe, id=request.POST.get('button_id'))
 
-    if recipe.likes.filter(id=request.user.id).exists():
-        recipe.likes.remove(request.user)
-    else:
-        recipe.likes.add(request.user)
-
+        if recipe.likes.filter(id=request.user.id).exists():
+            recipe.likes.remove(request.user)
+        else:
+            recipe.likes.add(request.user)
     return HttpResponseRedirect(reverse('recipe', args=[str(pk)]))
+
 
 def taggedRecipes(request, tag_id):
     tagCheck = get_object_or_404(Tag, id=tag_id)
@@ -57,8 +58,13 @@ def user_liked_recipes(request):
 #     my_recipes = Recipe.objects.filter(writer=the_user)
 #     return render(request, 'my_recipes.html', {'recipes': my_recipes})
 
-def recipe_feed_view(request):
+def my_recipes_view(request):
     the_user = request.user
+    if request.method == 'GET' and 'user' in request.GET:
+        the_user = User.objects.get(pk=request.GET['user'])
+    if not the_user.is_authenticated and 'user' not in request.GET:
+        return HttpResponseRedirect(reverse('feed'))
+
     sort_by = "id"
     if request.method == 'GET' and 'sort' in request.GET:
         sort_by = request.GET['sort']
@@ -69,12 +75,12 @@ def recipe_feed_view(request):
         my_recipes = Recipe.objects.filter(writer=the_user).annotate(q_count=Count('likes')).order_by('-q_count')
     else:
         my_recipes = Recipe.objects.filter(writer=the_user).order_by(sort_by)
-    return render(request, "my_recipes.html", context={"recipes": my_recipes, "sort": sort_by})
+    return render(request, "my_recipes.html", context={"recipes": my_recipes, "sort": sort_by, "recipes_by": the_user})
 
 
 def add_ingredient(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         ingredient_name = request.POST.get('ingredient')
         unit_name = request.POST.get('units')
         ingred = Ingredient.objects.create()
@@ -92,7 +98,7 @@ def add_ingredient(request, recipe_id):
 
 def add_step(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         step_text = request.POST.get('text')
         step = Step.objects.create(text=step_text)
         step.text = step_text
@@ -106,7 +112,7 @@ def add_step(request, recipe_id):
 
 def add_comment(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         comment_text = request.POST.get('text')
         comment = RecipeComment.objects.create()
         # print("Comment text: ")
@@ -122,7 +128,7 @@ def add_comment(request, recipe_id):
 
 
 def submit_recipe(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         recipe_title = request.POST.get('title')
         step_text = request.POST.get('text')
         ingredient_name = request.POST.get('ingredient')
@@ -152,14 +158,16 @@ def submit_recipe(request):
 
 
 def delete_ingredient(request, ingredient_id, recipe_id):
-    ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
-    ingredient.delete()
+    if request.user.is_authenticated:
+        ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
+        ingredient.delete()
     return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
 
 
 def delete_step(request, step_id, recipe_id):
-    step = get_object_or_404(Step, pk=step_id)
-    step.delete()
+    if request.user.is_authenticated:
+        step = get_object_or_404(Step, pk=step_id)
+        step.delete()
     return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
 
 
@@ -204,20 +212,21 @@ def feed_view(request):
 
 def fork(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    recipe2 = get_object_or_404(Recipe, pk=recipe_id)
-    recipe.pk = None
-    recipe.writer = User.objects.get(username=request.user)
-    recipe.save()
-    recipe.parentRecipe = recipe2
-    recipe.save()
-    for step in recipe2.step_set.all():
-        step.pk = None
-        step.save()
-        step.recipe.set(Recipe.objects.filter(id=recipe.id))
-        step.save()
-    for ingredient in recipe2.ingredient_set.all():
-        ingredient.pk = None
-        ingredient.save()
-        ingredient.recipe.set(Recipe.objects.filter(id=recipe.id))
-        ingredient.save()
+    if request.user.is_authenticated:
+        recipe2 = get_object_or_404(Recipe, pk=recipe_id)
+        recipe.pk = None
+        recipe.writer = User.objects.get(username=request.user)
+        recipe.save()
+        recipe.parentRecipe = recipe2
+        recipe.save()
+        for step in recipe2.step_set.all():
+            step.pk = None
+            step.save()
+            step.recipe.set(Recipe.objects.filter(id=recipe.id))
+            step.save()
+        for ingredient in recipe2.ingredient_set.all():
+            ingredient.pk = None
+            ingredient.save()
+            ingredient.recipe.set(Recipe.objects.filter(id=recipe.id))
+            ingredient.save()
     return HttpResponseRedirect(reverse('recipe', args=(recipe.id,)))

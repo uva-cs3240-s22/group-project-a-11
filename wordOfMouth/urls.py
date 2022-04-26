@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from home.views import submit_recipe
 from home.views import recipeView, add_step, \
-add_ingredient, delete_ingredient, likeView, delete_step, feed_view, fork, add_comment, user_liked_recipes, taggedRecipes, recipe_feed_view
+add_ingredient, delete_ingredient, likeView, delete_step, feed_view, fork, add_comment, user_liked_recipes, taggedRecipes, \
+    add_ingredient, delete_ingredient, likeView, delete_step, feed_view, fork, add_comment, taggedRecipes, my_recipes_view
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 app_name = 'wordOfMouth'
@@ -35,8 +36,8 @@ urlpatterns = [
     path('feed', feed_view, name="feed"),
     path('fork/<int:recipe_id>', fork, name="forking"),
     path('commentAdd/<int:recipe_id>', add_comment, name="comment-adding"),
-    path('user', recipe_feed_view, name='user-recipes'),
     path('like/user', user_liked_recipes, name='liked-recipes'),
+    path('user', my_recipes_view, name='user-recipes'),
     path('tag/<int:tag_id>',taggedRecipes,name="tagView"),
 ]
 
