@@ -23,7 +23,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 app_name = 'wordOfMouth'
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path('', feed_view, name='home'),
     path('recipeSubmission', submit_recipe, name='recipeSubmission'),
@@ -39,6 +38,7 @@ urlpatterns = [
     path('like/user', user_liked_recipes, name='liked-recipes'),
     path('user', my_recipes_view, name='user-recipes'),
     path('tag/<int:tag_id>',taggedRecipes,name="tagView"),
+    path('secretadmin',admin.site.urls,name="admin"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
