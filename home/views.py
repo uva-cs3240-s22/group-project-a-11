@@ -27,10 +27,13 @@ def likeView(request, pk):
 
 # meet with Ben and decide on formatting for html file
 
-#def user_liked_recipes(request):
-    #the_user = request.user
-    #my_liked_recipes = Recipe.likes.filter(id=the_user)
-    #return render(request, 'my_liked_recipes.html', {'recipes': my_liked_recipes})
+def user_liked_recipes(request):
+    the_user = request.user
+    my_liked_recipes = []
+    for recipe in Recipe.objects.all():
+        if recipe.likes.filter(id=request.user.id).exists():
+            my_liked_recipes.append(recipe)
+    return render(request, 'my_recipes.html', {'recipes': my_liked_recipes})
 
 
 # def user_recipes(request):
