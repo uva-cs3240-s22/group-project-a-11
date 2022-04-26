@@ -87,7 +87,7 @@
         </div>
     </div>
     <div class="row mt-1">
-        <div class="col"><h4>Posted by {{ recipe.writer }} </h4></div>
+        <div class="col"><h4>Posted by <a href="/user?user={{ recipe.writer.id }}">{{ recipe.writer }}</a></h4></div>
         {% if recipe.parentRecipe != self %}
             <div class="col">
                 <a href="{% url 'recipe' recipe.parentRecipe.id %}">

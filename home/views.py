@@ -43,8 +43,11 @@ def taggedRecipes(request, tag_id):
 #     my_recipes = Recipe.objects.filter(writer=the_user)
 #     return render(request, 'my_recipes.html', {'recipes': my_recipes})
 
-def recipe_feed_view(request):
+def my_recipes_view(request):
     the_user = request.user
+    if request.method == 'GET' and 'user' in request.GET:
+        the_user = User.objects.get(pk=request.GET['user'])
+
     sort_by = "id"
     if request.method == 'GET' and 'sort' in request.GET:
         sort_by = request.GET['sort']
@@ -55,7 +58,7 @@ def recipe_feed_view(request):
         my_recipes = Recipe.objects.filter(writer=the_user).annotate(q_count=Count('likes')).order_by('-q_count')
     else:
         my_recipes = Recipe.objects.filter(writer=the_user).order_by(sort_by)
-    return render(request, "my_recipes.html", context={"recipes": my_recipes, "sort": sort_by})
+    return render(request, "my_recipes.html", context={"recipes": my_recipes, "sort": sort_by, "recipes_by": the_user})
 
 
 def add_ingredient(request, recipe_id):
