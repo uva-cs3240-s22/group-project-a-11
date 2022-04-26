@@ -24,6 +24,11 @@ def likeView(request, pk):
 
     return HttpResponseRedirect(reverse('recipe', args=[str(pk)]))
 
+def taggedRecipes(request, tag_id):
+    tagCheck = get_object_or_404(Tag, id=tag_id)
+    recipeTag = Recipe.objects.filter(tag__tag = tagCheck.tag)
+    return render(request,'tagView.html', context={'recipes' : recipeTag, 'tag' : tagCheck})
+
 
 # meet with Ben and decide on formatting for html file
 
@@ -97,6 +102,7 @@ def add_comment(request, recipe_id):
         # print(comment_text)
         comment.text = comment_text
         comment.recipe.set(Recipe.objects.filter(id=recipe_id))
+        comment.writer = request.user
         recipe.save()
         comment.save()
         return HttpResponseRedirect(reverse('recipe', args=[recipe_id]))
@@ -154,7 +160,7 @@ def recipeView(request, recipe_id):
         return render(request, "recipe.html", context={"recipe": recipe})
     if 'tag_add' in request.POST:
         tag = Tag.objects.create()
-        tag.tag = request.POST.get('tag_add')
+        tag.tag = request.POST.get('tag_add').title()  # .title() normalizes capitalization to Title Case
         tag.recipe.set(Recipe.objects.filter(id=recipe_id))
         tag.save()
         recipe.save()
