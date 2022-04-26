@@ -33,12 +33,23 @@ def taggedRecipes(request, tag_id):
 # meet with Ben and decide on formatting for html file
 
 def user_liked_recipes(request):
-    the_user = request.user
     my_liked_recipes = []
-    for recipe in Recipe.objects.all():
+    sort_by = "id"
+    if request.method == 'GET' and 'sort' in request.GET:
+        sort_by = request.GET['sort']
+    if request.method == 'GET' and 'r' in request.GET:
+        sort_by = "-" + sort_by
+
+    if sort_by == "likes":
+        all_recipes = Recipe.objects.annotate(q_count=Count('likes')).order_by('-q_count')
+    else:
+        all_recipes = Recipe.objects.all().order_by(sort_by)
+
+    for recipe in all_recipes:
         if recipe.likes.filter(id=request.user.id).exists():
             my_liked_recipes.append(recipe)
-    return render(request, 'my_recipes.html', {'recipes': my_liked_recipes})
+
+    return render(request, 'my_recipes.html', {'recipes': my_liked_recipes, "sort": sort_by})
 
 
 # def user_recipes(request):
