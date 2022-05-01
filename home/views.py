@@ -197,7 +197,7 @@ def recipeView(request, recipe_id):
 
 
 def feed_view(request):
-    sort_by = "id"
+    sort_by = "-id"
     if request.method == 'GET' and 'sort' in request.GET:
         sort_by = request.GET['sort']
     if request.method == 'GET' and 'r' in request.GET:
