@@ -53,11 +53,7 @@ def my_recipes_view(request):
     if not the_user.is_authenticated and 'user' not in request.GET:
         return HttpResponseRedirect(reverse('feed'))
 
-    sort_by = "id"
-    if request.method == 'GET' and 'sort' in request.GET:
-        sort_by = request.GET['sort']
-    if request.method == 'GET' and 'r' in request.GET:
-        sort_by = "-" + sort_by
+    sort_by = sort_order(request)
 
     if sort_by == "likes":
         my_recipes = Recipe.objects.filter(writer=the_user).annotate(q_count=Count('likes')).order_by('-q_count')

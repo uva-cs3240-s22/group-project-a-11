@@ -11,8 +11,8 @@
     <div id="feed" class="w-75 container mt-3 mb-3">
         <div class="btn-toolbar mb-3 d-flex justify-content-center" role="toolbar" aria-label="Sort Toolbar">
             <div class="btn-group mr-2" style="margin-right: 1em" role="group" aria-label="Time Created">
-                <a href="/user" role="button" class="btn {% if sort == "id" %} btn-primary {% else %} btn-secondary {% endif %}">Oldest First</a>
-                <a href="/user?r=True" role="button" class="btn {% if sort == "-id" %} btn-primary {% else %} btn-secondary {% endif %}">Newest First</a>
+                <a href="/user?sort=oldest" role="button" class="btn {% if sort == "id" %} btn-primary {% else %} btn-secondary {% endif %}">Oldest First</a>
+                <a href="/user" role="button" class="btn {% if sort == "-id" %} btn-primary {% else %} btn-secondary {% endif %}">Newest First</a>
             </div>
             <div class="btn-group mr-2" style="margin-right: 1em" role="group" aria-label="Name">
                 <a href="/user?sort=recipeTitle" role="button" class="btn {% if sort == "recipeTitle" %} btn-primary {% else %} btn-secondary {% endif %}">A <i class="bi bi-arrow-right"></i> Z</a>
