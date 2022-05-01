@@ -3,7 +3,6 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from .models import Recipe, Step, Ingredient, Tag, User, RecipeComment
 from django.db.models import Count
-from django.views.generic.list import ListView
 
 
 # Create your views here.
@@ -31,15 +30,9 @@ def taggedRecipes(request, tag_id):
     return render(request,'tagView.html', context={'recipes' : recipeTag, 'tag' : tagCheck})
 
 
-# meet with Ben and decide on formatting for html file
-
 def user_liked_recipes(request):
     my_liked_recipes = []
-    sort_by = "id"
-    if request.method == 'GET' and 'sort' in request.GET:
-        sort_by = request.GET['sort']
-    if request.method == 'GET' and 'r' in request.GET:
-        sort_by = "-" + sort_by
+    sort_by = sort_order(request)
 
     if sort_by == "likes":
         all_recipes = Recipe.objects.annotate(q_count=Count('likes')).order_by('-q_count')
@@ -52,11 +45,6 @@ def user_liked_recipes(request):
 
     return render(request, 'my_liked_recipes.html', {'recipes': my_liked_recipes, "sort": sort_by})
 
-
-# def user_recipes(request):
-#     the_user = request.user
-#     my_recipes = Recipe.objects.filter(writer=the_user)
-#     return render(request, 'my_recipes.html', {'recipes': my_recipes})
 
 def my_recipes_view(request):
     the_user = request.user
@@ -115,8 +103,6 @@ def add_comment(request, recipe_id):
     if request.method == "POST" and request.user.is_authenticated:
         comment_text = request.POST.get('text')
         comment = RecipeComment.objects.create()
-        # print("Comment text: ")
-        # print(comment_text)
         comment.text = comment_text
         comment.recipe.set(Recipe.objects.filter(id=recipe_id))
         comment.writer = request.user
@@ -197,12 +183,7 @@ def recipeView(request, recipe_id):
 
 
 def feed_view(request):
-    sort_by = "-id"
-    if request.method == 'GET' and 'sort' in request.GET:
-        sort_by = request.GET['sort']
-    if request.method == 'GET' and 'r' in request.GET:
-        sort_by = "-" + sort_by
-
+    sort_by = sort_order(request)
     if sort_by == "likes":
         all_recipes = Recipe.objects.annotate(q_count=Count('likes')).order_by('-q_count')
     else:
@@ -230,3 +211,15 @@ def fork(request, recipe_id):
             ingredient.recipe.set(Recipe.objects.filter(id=recipe.id))
             ingredient.save()
     return HttpResponseRedirect(reverse('recipe', args=(recipe.id,)))
+
+
+def sort_order(request):
+    sort_by = "-id"
+    if request.method == 'GET':
+        if "sort" in request.GET:
+            sort_by = request.GET['sort']
+            if sort_by == "oldest":
+                sort_by = "id"
+        if 'r' in request.GET:
+            sort_by = "-" + sort_by
+    return sort_by
