@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Ingredients, Recipe
+from .models import Ingredients, Recipe, Step,Tag
 
 # Create your tests here.
 """
@@ -46,3 +46,4 @@ class RecipeTestCase(TestCase):
         cooked_bacon = Recipe.objects.get(recipeTitle="cooked_bacon")
         water = Ingredients.objects.get(name="water")
         self.assertEqual(water.recipe, cooked_bacon)
+
