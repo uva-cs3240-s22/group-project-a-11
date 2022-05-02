@@ -31,12 +31,15 @@
                     <input type="text" name='ingredient' class="form-control" id="recipe-ingredient-input" required>
                 </div>
                 <div class="col">
-                    <label for="recipe-ingredient-unit-input" class="form-label">Ingredient Units:</label>
-                    <input type="text" name='units' class="form-control" id="recipe-ingredient-unit-input" required>
+                    <label for="recipe-ingredient-amount-input" class="form-label">Ingredient Amount:</label>
+                    <input type="number" max=9999999999 min=0.125 step=.125 name='amount' class="form-control" required
+                               oninvalid="this.setCustomValidity('Values between 0.125 and 9999999999 accepted\nDecimals must be increments of .125')"
+                               oninput="this.setCustomValidity('')" value="1">
                 </div>
                 <div class="col">
-                    <label for="recipe-ingredient-amount-input" class="form-label">Ingredient Amount:</label>
-                    <input type="number" name='amount' class="form-control" id="recipe-ingredient-amount-input" required/>
+                    <label for="recipe-ingredient-unit-input" class="form-label">Ingredient Units:</label>
+                    <input type="text" name='units' class="form-control" id="recipe-ingredient-unit-input"
+                           required placeholder="cups, tsp, etc.">
                 </div>
             </div>
             <div class="mb-3 row">

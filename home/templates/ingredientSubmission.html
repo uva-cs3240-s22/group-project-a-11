@@ -25,13 +25,14 @@
                 <div class="row">
                     <div class="mb-3 col">
                         {% bootstrap_label "Add your Ingredient's Amount:" %}
-                        <input type="number" name='amount' class="form-control" required>
+                        <input type="number" max=9999999999 min=0.125 step=.125 name='amount' class="form-control" required
+                               oninvalid="this.setCustomValidity('Values between 0.125 and 9999999999 accepted\nDecimals must be increments of .125')"
+                               oninput="this.setCustomValidity('')" value="1">
                     </div>
                     <div class="mb-3 col">
                         {% bootstrap_label "Add your Ingredient's Units:" %}
-                        <input type = 'text' name = 'units' class="form-control" required>
+                        <input type = 'text' name = 'units' class="form-control" required placeholder="cups, tsp, etc.">
                     </div>
-
                 </div>
                 {% buttons %}
                     <button type="submit" class="btn btn-primary justify-content-right">

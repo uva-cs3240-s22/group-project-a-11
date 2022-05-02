@@ -44,7 +44,7 @@ class Ingredients(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     units = models.CharField(max_length=200)
-    quantity = models.IntegerField()
+    quantity = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -69,7 +69,7 @@ class Cuisine_Type(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(max_length=200)
     units = models.CharField(max_length=200, blank=True, null=True)
-    quantity = models.IntegerField(blank=True, null=True)
+    quantity = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
     qualifier = models.CharField(max_length=200, blank=True, null=True)
     recipe = models.ManyToManyField(Recipe)
 
