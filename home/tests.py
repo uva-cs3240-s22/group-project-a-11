@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Ingredients, Recipe
+from .models import Ingredients, Recipe, Step,Tag
 
 # Create your tests here.
 """
@@ -26,6 +26,8 @@ class RecipeTestCase(TestCase):
     def setUp(self):
         recipe = Recipe.objects.create(recipeTitle="cooked_bacon", recipeText="Cooked Bacon")
         Ingredients.objects.create(recipe=recipe, name="water", units="mg", quantity="3")
+        Step.objects.create(recipe=recipe, text="we ball")
+        Tag.objects.create(recipe=recipe, tag="meat")
 
     def test_recipe_text_equivalence(self):
         cooked_bacon = Recipe.objects.get(recipeTitle="cooked_bacon")
@@ -46,3 +48,15 @@ class RecipeTestCase(TestCase):
         cooked_bacon = Recipe.objects.get(recipeTitle="cooked_bacon")
         water = Ingredients.objects.get(name="water")
         self.assertEqual(water.recipe, cooked_bacon)
+
+    def test_recipe_add_step(self):
+        rec_test = Recipe.objects.get(recipeTitle="cooked_bacon")
+        we_ball = Step.objects.get(text = "we ball")
+        self.assertEqual(we_ball.recipe, rec_test)
+
+    def test_recipe_add_tag(self):
+        rec_test = Recipe.objects.get(recipeTitle="cooked_bacon")
+        tag_test = Tag.objects.get(tag = "meat")
+        self.assertEqual(tag_test.recipe, rec_test)
+
+

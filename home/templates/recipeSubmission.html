@@ -49,7 +49,9 @@
                 </div>
                 <div class="col">
                     <label for="time-to-make" class="form-label">Preparation Time (minutes):</label>
-                    <input type="number" name='time_to_make' class="form-control" id="time-to-make" required/>
+                    <input type="number" max=10000 min=1 step=1 name='time_to_make' class="form-control" id="time-to-make" required
+                           oninvalid="this.setCustomValidity('Values between 1 and 10000 accepted\nCannot have decimals')"
+                           oninput="this.setCustomValidity('')" value="1">
                 </div>
             </div>
 
