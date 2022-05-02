@@ -65,20 +65,18 @@
 
         <div class="row mt-1">
             <div class="col">
-                <h4>Posted by <a href="/user?user={{ recipe.writer.id }}">{{ recipe.writer }}</a></h4>
+                <h5>Posted by <a href="/user?user={{ recipe.writer.id }}">{{ recipe.writer }}</a></h5>
+
+                {% if recipe.parentRecipe != self %}
+                    {#                <div class="col">#}
+                    <h6>Based on a recipe by <a href="{% url 'recipe' recipe.parentRecipe.id %}">{{ recipe.parentRecipe.writer.username }}</a></h6>
+                    {#                </div>#}
+                {% endif %}
             </div>
-            {% if recipe.parentRecipe != self %}
-                <div class="col">
-                    <a href="{% url 'recipe' recipe.parentRecipe.id %}">
-                        <h4>Parent Recipe by {{ recipe.parentRecipe.writer.username }}</h4>
-                    </a>
-                </div>
-            {% endif %}
             <div class="col text-end">
                 <a href="{% url 'forking' recipe.id %}"><button type="button" class="btn btn-primary"
                                                                 {% if not user.is_authenticated %}disabled{% endif %}>
-                        Fork
-                    </button></a>
+                    Fork</button></a>
                 <br />
                 <small>"Fork" this recipe to <br/> create your own version!</small>
             </div>
@@ -89,6 +87,9 @@
                 {% for tag in recipe.tag_set.all %}
                     <a href="{% url 'tagView' tag.id %}"># {{tag.tag}}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
+                {% if recipe.tag_set.all.count == 0 %}
+                    <small style="margin-left: .1em">None</small>
+                {% endif %}
             </p>
             {% if user.username == recipe.writer.username %}
                 <form method="POST">
@@ -209,5 +210,8 @@
                 </div>
             </div>
         {% endfor %}
+        {% if recipe.recipecomment_set.all.count == 0 %}
+            <p>No comments yet.</p>
+        {% endif %}
     </div>
 {% endblock %}
