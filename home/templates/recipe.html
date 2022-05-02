@@ -11,16 +11,17 @@
 {% endblock %}
 
 {% block content %}
-    <!-- title -->
     {% csrf_token %}
+
+    <!-- title -->
     <h1 class="mt-3 text-center"> {{recipe.recipeTitle}} </h1>
     {% if user.username == recipe.writer.username %}
         <form method="POST" class="d-flex justify-content-center">
-                {% csrf_token %}
-                <div class="input-group mb-3 w-50">
-                    <input type="text" class="form-control" placeholder="Change Title" name="name_change">
-                </div>
-            </form>
+            {% csrf_token %}
+            <div class="input-group mb-3 w-50">
+                <input type="text" class="form-control" placeholder="Change Title" name="name_change">
+            </div>
+        </form>
     {% endif %}
 
     <!-- image -->
@@ -32,155 +33,173 @@
                      style="object-fit: scale-down; max-height: 60vh" alt="{{ recipe.title }}">
             </div>
         </div>
-
     {% endif %}
-<!-- caption -->
-<!-- time | rating -->
-<!-- author | fork -->
-<div class="recipe-metadata container mt-3 mb-3">
-    <div class="row">
-        <div class="col"><h4>{{recipe.time_to_make}} minutes</h4></div>
-        <div class="col text-end d-flex justify-content-end">
-            <div style="margin-right: 1em; margin-top: 0.5em">
-                <h5>{{ recipe.total_likes }} <i class="bi bi-heart-fill"></i></h5>
-            </div>
 
-            <form action="{% url 'like' recipe.id %}" method='POST'>
-                {% csrf_token %}
-                {% if user.is_authenticated %}
-                    {% if user in recipe.likes.all %}
-                        <button class="btn btn-danger" type="submit" name="button_id"
-                                value="{{recipe.id}}"><i class="bi bi-heart"></i> Unlike</button>
-                    {% else %}
-                        <button class="btn btn-primary" type="submit" name="button_id"
-                                value="{{recipe.id}}"><i class="bi bi-heart-fill"></i> Like</button>
-                    {% endif %}
-                {% else %}
-                    <small>Must log in to like</small>
-                {% endif %}
-            </form>
-        </div>
-    </div>
-    <div class="row mt-1">
-        <div class="col"><h4>Posted by <a href="/user?user={{ recipe.writer.id }}">{{ recipe.writer }}</a></h4></div>
-        {% if recipe.parentRecipe != self %}
-            <div class="col">
-                <a href="{% url 'recipe' recipe.parentRecipe.id %}">
-                    <h4>Parent Recipe by {{ recipe.parentRecipe.writer.username }}</h4>
-                </a>
-            </div>
-        {% endif %}
-        <div class="col text-end">
-            <a href="{% url 'forking' recipe.id %}">
-                <button type="button" class="btn btn-primary" {% if not user.is_authenticated %}disabled{% endif %}>
-                    Fork
-                </button>
-            </a>
-            <br />
-            <small>"Fork" this recipe to create your own version!</small>
-        </div>
-    </div>
-    <div class="row mt-1">
-        <h5>Tags</h5>
-        <p>
-            {% for tag in recipe.tag_set.all %}
-                <a href="{% url 'tagView' tag.id %}"># {{tag.tag}}</a>{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        </p>
-        {% if user.username == recipe.writer.username %}
-            <form method="POST">
-                {% csrf_token %}
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Add a Tag" name="tag_add">
+    <!-- time | like -->
+    <!-- author | fork -->
+    <div class="recipe-metadata container mt-3 mb-3">
+        <div class="row">
+            <div class="col"><h4>{{recipe.time_to_make}} minutes</h4></div>
+
+            <div class="col text-end d-flex justify-content-end">
+                <div style="margin-right: 1em; margin-top: 0.5em">
+                    <h5>{{ recipe.total_likes }} <i class="bi bi-heart-fill"></i></h5>
                 </div>
-            </form>
-        {% endif %}
-    </div>
-</div>
 
-<!-- ingredients -->
-<div class="ingredients-directions-header">
-    <h4>Ingredients</h4>
+                <form action="{% url 'like' recipe.id %}" method='POST'>
+                    {% csrf_token %}
+                    {% if user.is_authenticated %}
+                        {% if user in recipe.likes.all %}
+                            <button class="btn btn-danger" type="submit" name="button_id"
+                                    value="{{recipe.id}}"><i class="bi bi-heart"></i> Unlike</button>
+                        {% else %}
+                            <button class="btn btn-primary" type="submit" name="button_id"
+                                    value="{{recipe.id}}"><i class="bi bi-heart-fill"></i> Like</button>
+                        {% endif %}
+                    {% else %}
+                        <small>Must log in to like</small>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
 
-    {% if user.username == recipe.writer.username %}
-        <a href="{% url 'ingredient-adding' recipe.id %}">
-            <button type="button" class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
-                </svg>
-                Add Ingredient
-            </button>
-        </a>
-    {% endif %}
-</div>
-<ul>
-    {% for ingredient in recipe.ingredient_set.all %}
-        <li>{{ ingredient.quantity.normalize }} {{ingredient.units}} {{ingredient.name}}
-            {% if user.username == recipe.writer.username %}
-                <a href="{% url 'delete-ingredient' recipe.id ingredient.id %}" >
-                    <button type="button" class="btn btn-secondary m-1" onclick="return confirm('Are you sure you would like to delete this ingredient?')">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
-                        </svg>
-                        Delete Ingredient
+        <div class="row mt-1">
+            <div class="col">
+                <h4>Posted by <a href="/user?user={{ recipe.writer.id }}">{{ recipe.writer }}</a></h4>
+            </div>
+            {% if recipe.parentRecipe != self %}
+                <div class="col">
+                    <a href="{% url 'recipe' recipe.parentRecipe.id %}">
+                        <h4>Parent Recipe by {{ recipe.parentRecipe.writer.username }}</h4>
+                    </a>
+                </div>
+            {% endif %}
+            <div class="col text-end">
+                <a href="{% url 'forking' recipe.id %}">
+                    <button type="button" class="btn btn-primary" {% if not user.is_authenticated %}disabled{% endif %}>
+                        Fork
                     </button>
                 </a>
+                <br />
+                <small>"Fork" this recipe to create your own version!</small>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <h5>Tags</h5>
+            <p>
+                {% for tag in recipe.tag_set.all %}
+                    <a href="{% url 'tagView' tag.id %}"># {{tag.tag}}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </p>
+            {% if user.username == recipe.writer.username %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Add a Tag" name="tag_add">
+                    </div>
+                </form>
             {% endif %}
-        </li>
-    {% endfor %}
-</ul>
-<!-- directions -->
-<div class="ingredients-directions-header">
-    <h4>Directions</h4>
-    {% if user.username == recipe.writer.username %}
-        <a href="{% url 'step-adding' recipe.id %}" role="button" class="btn btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
-            </svg>
-            Add Step
-        </a>
-    {% endif %}
-</div>
-<div class="accordion" id="stepAccordion">
-    {% for step in recipe.step_set.all %}
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseOne">
-                    Step {{ forloop.counter }}
+        </div>
+    </div>
+
+    <!-- ingredients -->
+    <div class="ingredients-directions-header">
+        <h4>Ingredients</h4>
+
+        {% if user.username == recipe.writer.username %}
+            <a href="{% url 'ingredient-adding' recipe.id %}">
+                <button type="button" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0
+                        1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
+                    </svg>
+                    Add Ingredient
                 </button>
-            </h2>
-            <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse show" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#accordionExample">
-                <div class="accordion-body d-flex flex-direction-row justify-content-between">
-                    <div>{{step.text}}</div>
-                    {% if user.username == recipe.writer.username %}
-                        <div>
-                            <a href="{% url 'delete-step' recipe.id step.id %}">
-                                <button type="button" class="btn btn-secondary" onclick="return confirm('Are you sure you would like to delete this step?')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
-                                    </svg>
-                                    Delete Step
-                                    <span class="visually-hidden">Button</span>
-                                </button>
-                            </a>
-                        </div>
-                    {% endif %}
+            </a>
+        {% endif %}
+    </div>
+    <ul>
+        {% for ingredient in recipe.ingredient_set.all %}
+            <li>{{ ingredient.quantity.normalize }} {{ingredient.units}} {{ingredient.name}}
+                {% if user.username == recipe.writer.username %}
+                    <a href="{% url 'delete-ingredient' recipe.id ingredient.id %}" >
+                        <button type="button" class="btn btn-secondary m-1"
+                                onclick="return confirm('Are you sure you would like to delete this ingredient?')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293
+                                8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707
+                                8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                            </svg>
+                            Delete Ingredient
+                        </button>
+                    </a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- directions -->
+    <div class="ingredients-directions-header">
+        <h4>Directions</h4>
+        {% if user.username == recipe.writer.username %}
+            <a href="{% url 'step-adding' recipe.id %}" role="button" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0
+                    1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
+                </svg>
+                Add Step
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="accordion" id="stepAccordion">
+        {% for step in recipe.step_set.all %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseOne">
+                        Step {{ forloop.counter }}
+                    </button>
+                </h2>
+                <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse show"
+                     aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#accordionExample">
+                    <div class="accordion-body d-flex flex-direction-row justify-content-between">
+                        <div>{{step.text}}</div>
+                        {% if user.username == recipe.writer.username %}
+                            <div>
+                                <a href="{% url 'delete-step' recipe.id step.id %}">
+                                    <button type="button" class="btn btn-secondary"
+                                            onclick="return confirm('Are you sure you would like to delete this step?')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1
+                                            0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5
+                                             0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                                        </svg>
+                                        Delete Step
+                                        <span class="visually-hidden">Button</span>
+                                    </button>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
+        {% endfor %}
+    </div>
 
-        </div>
-    {% endfor %}
-</div>
-<!-- comments -->
-<!-- TODO: Do we need to paginate comments (bc they could make the page really long) -->
-<div class="ingredients-directions-header">
-    <h4>Comments</h4>
-    {% if user.is_authenticated %}
-        <a href="{% url 'comment-adding' recipe.id %}" class="btn btn-primary mt-1" role="button">Add Comment</a>
-    {% endif %}
-</div>
-<div class="container">
-    {% for comment in recipe.recipecomment_set.all %}
+    <!-- comments -->
+    <div class="ingredients-directions-header">
+        <h4>Comments</h4>
+        {% if user.is_authenticated %}
+            <a href="{% url 'comment-adding' recipe.id %}" class="btn btn-primary mt-1" role="button">Add Comment</a>
+        {% endif %}
+    </div>
+    <div class="container">
+        {% for comment in recipe.recipecomment_set.all %}
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row justify-content-between">
@@ -190,7 +209,6 @@
                     <p class="card-text">{{comment.text}}</p>
                 </div>
             </div>
-    {% endfor %}
-</div>
-
+        {% endfor %}
+    </div>
 {% endblock %}
