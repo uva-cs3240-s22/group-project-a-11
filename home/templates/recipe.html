@@ -12,7 +12,6 @@
 
 {% block content %}
     <!-- title -->
-
     {% csrf_token %}
     <h1 class="mt-3 text-center"> {{recipe.recipeTitle}} </h1>
     {% if user.username == recipe.writer.username %}
@@ -77,6 +76,8 @@
                     Fork
                 </button>
             </a>
+            <br />
+            <small>"Fork" this recipe to create your own version!</small>
         </div>
     </div>
     <div class="row mt-1">
@@ -112,7 +113,6 @@
         </a>
     {% endif %}
 </div>
-{#    <p>Makes <input type="number" value="1" id="servings"/> <label for="servings">servings</label></p>#}
 <ul>
     {% for ingredient in recipe.ingredient_set.all %}
         <li>{{ ingredient.quantity.normalize }} {{ingredient.units}} {{ingredient.name}}
