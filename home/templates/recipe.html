@@ -66,11 +66,8 @@
         <div class="row mt-1">
             <div class="col">
                 <h5>Posted by <a href="/user?user={{ recipe.writer.id }}">{{ recipe.writer }}</a></h5>
-
                 {% if recipe.parentRecipe != self %}
-                    {#                <div class="col">#}
                     <h6>Based on a recipe by <a href="{% url 'recipe' recipe.parentRecipe.id %}">{{ recipe.parentRecipe.writer.username }}</a></h6>
-                    {#                </div>#}
                 {% endif %}
             </div>
             <div class="col text-end">
