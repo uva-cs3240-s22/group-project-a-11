@@ -30,7 +30,7 @@
                         {% if recipe.image.url is not None%}
                         <a href="/recipe/{{ recipe.id }}" class="stretched-link">
                             <img src="{{ recipe.image.url }}" class="card-img-top"
-                                 style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover;" alt="Photo of cereal">
+                                 style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover;" alt="Photo of {{ recipe.recipeTitle }}">
                         </a>
                         {% endif %}
                         <div class="card-body" style="background-color: #FDF3DD">
